@@ -1,7 +1,23 @@
 #!/bin/bash
+set -e
+
 if [ -z "${DISPLAY}" ]; then
     echo "DISPLAY is not set"
     exit 1
 fi
-xhost +
-docker run --rm -it -v "$(pwd)":/context -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --network host mindchildren/mc_robot_description:latest ros2 launch mc_robot_description rviz_goal.py
+
+XAUTH="${XAUTHORITY:-$HOME/.Xauthority}"
+if [ ! -f "$XAUTH" ]; then
+    echo "Xauthority file not found: $XAUTH"
+    exit 1
+fi
+
+docker run --rm -it \
+  --network host \
+  -v "$(pwd)":/context \
+  -e DISPLAY="$DISPLAY" \
+  -e XAUTHORITY=/root/.Xauthority \
+  -v "$XAUTH":/root/.Xauthority:ro \
+  -e QT_X11_NO_MITSHM=1 \
+  mindchildren/mc_robot_description:v0.1 \
+  ros2 launch mc_robot_description rviz_goal.py

@@ -5,9 +5,9 @@ ENV PIP_BREAK_SYSTEM_PACKAGES=1
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-jazzy-rviz2 \
-    ros-jazzy-joint_state_publisher_gui \
-    realsense2_description \
-    && rm -rf /var/lib/apt/lists/*
+    ros-jazzy-joint-state-publisher-gui \
+    ros-jazzy-realsense2-description \
+ && rm -rf /var/lib/apt/lists/*
 
 # -------------------------------------------------------------------
 # build platform workspace
