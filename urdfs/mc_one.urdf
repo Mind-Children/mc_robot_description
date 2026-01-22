@@ -1,0 +1,1012 @@
+<?xml version="1.0"?>
+<robot name="mc_one">
+
+    <!--
+    The links are named exactly like the bones in Blender.
+    The joints are named exactly like the axes of the jointsets.
+    -->
+
+    <link name="base">
+        <visual>
+            <geometry>
+                <mesh
+                    filename="package://mc_robot_description/meshes/mc_one/base.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+
+    <link name="wheel_middle" />
+    <joint name="_wheel_middle" type="fixed">
+        <origin xyz="0 0 0.076" rpy="0 0 0" />
+        <parent link="base" />
+        <child link="wheel_middle" />
+    </joint>
+
+    <link name="left_wheel">
+        <visual>
+            <geometry>
+                <mesh
+                    filename="package://mc_robot_description/meshes/mc_one/left_wheel.stl" />
+            </geometry>
+            <material name="dark_gray">
+                <color rgba="0.2 0.2 0.2 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="left_wheel" type="continuous">
+        <origin xyz="0 0.182 0" rpy="0 0 0" />
+        <parent link="wheel_middle" />
+        <child link="left_wheel" />
+        <axis xyz="0 1 0" />
+    </joint>
+
+    <link name="right_wheel">
+        <visual>
+            <geometry>
+                <mesh
+                    filename="package://mc_robot_description/meshes/mc_one/right_wheel.stl" />
+            </geometry>
+            <material name="dark_gray">
+                <color rgba="0.2 0.2 0.2 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="right_wheel" type="continuous">
+        <origin xyz="0 -0.182 0" rpy="0 0 0" />
+        <parent link="wheel_middle" />
+        <child link="right_wheel" />
+        <axis xyz="0 1 0" />
+    </joint>
+
+    <link name="upper_legs">
+        <visual>
+            <geometry>
+                <mesh
+                    filename="package://mc_robot_description/meshes/mc_one/upper_legs.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="knees" type="revolute">
+        <origin xyz="-0.0275 0 0.302" rpy="0 0 0" />
+        <parent link="base" />
+        <child link="upper_legs" />
+        <axis xyz="0 1 0" />
+        <limit lower="-1.5708" upper="0.3665" effort="0" velocity="0" />
+    </joint>
+
+    <link name="pelvis">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/pelvis.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="hips" type="revolute">
+        <!-- absolute: <origin xyz="-0.13314 0 0.51908" rpy="0 0 0"/>-->
+        <origin xyz="-0.10564 0 0.21708" rpy="0 0 0" />
+        <parent link="upper_legs" />
+        <child link="pelvis" />
+        <axis xyz="0 1 0" />
+        <limit lower="0.3665" upper="-1.5708" effort="0" velocity="0" />
+    </joint>
+
+    <link name="torso">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/torso.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="torso_rotate" type="revolute">
+        <!-- absolute: <origin xyz="-0.13314 0 0.51908" rpy="0 0 0"/>-->
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="pelvis" />
+        <child link="torso" />
+        <axis xyz="0 0 1" />
+        <limit lower="1.3963" upper="-1.3963" effort="0" velocity="0" />
+    </joint>
+
+    <link name="neck">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/neck.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="neck_turn" type="revolute">
+        <!-- absolute: <origin xyz="-0.13218 0 0.9" rpy="0 0 0"/>-->
+        <origin xyz="0.00096 0 0.38092" rpy="0 0 0" />
+        <parent link="torso" />
+        <child link="neck" />
+        <axis xyz="0 0 1" />
+        <limit lower="1.3963" upper="-1.3963" effort="0" velocity="0" />
+    </joint>
+
+    <link name="head">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/head.stl" />
+            </geometry>
+            <material name="light-gray">
+                <color rgba="0.8 0.8 0.8 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="head_nod" type="revolute">
+        <!-- absolute: <origin xyz="-0.1252 0 1" rpy="0 0 0"/>-->
+        <origin xyz="0.00698 0 0.1" rpy="0 0 0" />
+        <parent link="neck" />
+        <child link="head" />
+        <axis xyz="0 1 0" />
+        <limit lower="0.4363" upper="-0.6982" effort="0" velocity="0" />
+    </joint>
+
+    <link name="eyes"/>
+    <link name="eyes_apo"/>
+    <joint name="eyes_x" type="revolute">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="head" />
+        <child link="eyes" />
+        <axis xyz="1 0 0" />
+        <limit lower="-0.7854" upper="0.7854" effort="0" velocity="0" />
+    </joint>
+    <joint name="eyes_y" type="revolute">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="head" />
+        <child link="eyes" />
+        <axis xyz="0 1 0" />
+        <limit lower="-0.7854" upper="0.7854" effort="0" velocity="0" />
+    </joint>
+    <joint name="eyes_alpha" type="revolute">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="head" />
+        <child link="eyes_apo" />
+        <axis xyz="1 0 0" />
+        <limit lower="0.0" upper="1.0" effort="0" velocity="0" />
+    </joint>
+    <joint name="eyes_pupil" type="revolute">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="head" />
+        <child link="eyes_apo" />
+        <axis xyz="0 1 0" />
+        <limit lower="0.0" upper="1.0" effort="0" velocity="0" />
+    </joint>
+    <joint name="eyes_opening" type="revolute">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="head" />
+        <child link="eyes_apo" />
+        <axis xyz="0 0 1" />
+        <limit lower="0.0" upper="1.0" effort="0" velocity="0" />
+    </joint>
+
+    <link name="_left_shoulder_mount" />
+    <joint name="_left_shoulder_mount" type="fixed">
+        <!-- absolute: <origin xyz="-0.1323 0.09165 0.8581" rpy="0 0 0"/>-->
+        <origin xyz="0.00084 0.09165 0.33902" rpy="-0.5236 0 0" />
+        <parent link="torso" />
+        <child link="_left_shoulder_mount" />
+    </joint>
+
+    <link name="left_shoulder">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/left_shoulder.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="left_shoulder_phi" type="revolute">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="_left_shoulder_mount" />
+        <child link="left_shoulder" />
+        <axis xyz="0 1 0" />
+        <limit lower="1.0472" upper="-3.1416" effort="0" velocity="0" />
+    </joint>
+
+    <link name="_right_shoulder_mount" />
+    <joint name="_right_shoulder_mount" type="fixed">
+        <!-- absolute: <origin xyz="-0.1323 -0.09165 0.8581" rpy="0 0 0"/>-->
+        <origin xyz="0.00084 -0.09165 0.33902" rpy="0.5236 0 0" />
+        <parent link="torso" />
+        <child link="_right_shoulder_mount" />
+    </joint>
+
+    <link name="right_shoulder">
+        <visual>
+            <geometry>
+                <mesh
+                    filename="package://mc_robot_description/meshes/mc_one/right_shoulder.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="right_shoulder_phi" type="revolute">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="_right_shoulder_mount" />
+        <child link="right_shoulder" />
+        <axis xyz="0 1 0" />
+        <limit lower="1.0472" upper="-3.1416" effort="0" velocity="0" />
+    </joint>
+
+    <link name="left_upper_arm">
+        <visual>
+            <geometry>
+                <mesh
+                    filename="package://mc_robot_description/meshes/mc_one/left_upper_arm.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="left_shoulder_theta" type="revolute">
+        <!-- absolute: <origin xyz="-0.1323 0.141 0.8581" rpy="0 0 0"/>-->
+        <origin xyz="0 0.04935 0" rpy="0 0 0" />
+        <parent link="left_shoulder" />
+        <child link="left_upper_arm" />
+        <axis xyz="1 0 0" />
+        <limit lower="-0.8727" upper="0.6981" effort="0" velocity="0" />
+    </joint>
+
+    <link name="right_upper_arm">
+        <visual>
+            <geometry>
+                <mesh
+                    filename="package://mc_robot_description/meshes/mc_one/right_upper_arm.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="right_shoulder_theta" type="revolute">
+        <!-- absolute: <origin xyz="-0.1323 -0.141 0.8581" rpy="0 0 0"/>-->
+        <origin xyz="0 -0.04935 0" rpy="0 0 0" />
+        <parent link="right_shoulder" />
+        <child link="right_upper_arm" />
+        <axis xyz="1 0 0" />
+        <limit lower="0.8727" upper="-0.6981" effort="0" velocity="0" />
+    </joint>
+
+    <link name="left_elbow">
+        <visual>
+            <geometry>
+                <mesh
+                    filename="package://mc_robot_description/meshes/mc_one/left_elbow.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="left_elbow_phi" type="revolute">
+        <!-- absolute: <origin xyz="-0.1323 0.2647 0.8581" rpy="0 0 0"/>-->
+        <origin xyz="0 0.1237 0" rpy="0 0 0" />
+        <parent link="left_upper_arm" />
+        <child link="left_elbow" />
+        <axis xyz="0 1 0" />
+        <limit lower="0" upper="-1.0472" effort="0" velocity="0" />
+    </joint>
+
+    <link name="right_elbow">
+        <visual>
+            <geometry>
+                <mesh
+                    filename="package://mc_robot_description/meshes/mc_one/right_elbow.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="right_elbow_phi" type="revolute">
+        <!-- absolute: <origin xyz="-0.1323 -0.2647 0.8581" rpy="0 0 0"/>-->
+        <origin xyz="0 -0.1237 0" rpy="0 0 0" />
+        <parent link="right_upper_arm" />
+        <child link="right_elbow" />
+        <axis xyz="0 1 0" />
+        <limit lower="0" upper="-1.0472" effort="0" velocity="0" />
+    </joint>
+
+    <link name="left_lower_arm">
+        <visual>
+            <geometry>
+                <mesh
+                    filename="package://mc_robot_description/meshes/mc_one/left_lower_arm.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="left_elbow_theta" type="revolute">
+        <!-- absolute: <origin xyz="-0.1323 0.3059 0.8581" rpy="0 0 0"/>-->
+        <origin xyz="0 0.0412 0" rpy="0 0 0" />
+        <parent link="left_elbow" />
+        <child link="left_lower_arm" />
+        <axis xyz="1 0 0" />
+        <limit lower="-1.9199" upper="0" effort="0" velocity="0" />
+    </joint>
+
+    <link name="right_lower_arm">
+        <visual>
+            <geometry>
+                <mesh
+                    filename="package://mc_robot_description/meshes/mc_one/right_lower_arm.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="right_elbow_theta" type="revolute">
+        <!-- absolute: <origin xyz="-0.1323 -0.3059 0.8581" rpy="0 0 0"/>-->
+        <origin xyz="0 -0.0412 0" rpy="0 0 0" />
+        <parent link="right_elbow" />
+        <child link="right_lower_arm" />
+        <axis xyz="1 0 0" />
+        <limit lower="1.9199" upper="0" effort="0" velocity="0" />
+    </joint>
+
+    <link name="left_palm">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/left_palm.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="left_wrist" type="revolute">
+        <!-- absolute: <origin xyz="-0.1217 0.4671 0.8632" rpy="0 0 0"/>-->
+        <origin xyz="0.0106 0.1612 0.0051" rpy="0 0 0" />
+        <parent link="left_lower_arm" />
+        <child link="left_palm" />
+        <axis xyz="0 1 0" />
+        <limit lower="-3.14" upper="3.14" effort="0" velocity="0" />
+    </joint>
+
+    <link name="right_palm">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/right_palm.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="right_wrist" type="revolute">
+        <!-- absolute: <origin xyz="-0.1211 -0.4671 0.8531" rpy="0 0 0"/>-->
+        <origin xyz="0.0112 -0.1612 -0.005" rpy="0 0 0" />
+        <parent link="right_lower_arm" />
+        <child link="right_palm" />
+        <axis xyz="0 1 0" />
+        <limit lower="-3.14" upper="3.14" effort="0" velocity="0" />
+    </joint>
+
+    <link name="left_thumb_base">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/left_thumb_base.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="left_thumb" type="revolute">
+        <!-- absolute: <origin xyz="-0.0771 0.5155 0.8442" rpy="0 0 0"/>-->
+        <origin xyz="0.0446 0.0484 -0.019" rpy="0 0 -2.268928" /> <!-- thumb angle -->
+        <parent link="left_palm" />
+        <child link="left_thumb_base" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="-1.1" effort="0" velocity="0" />
+    </joint>
+
+    <link name="right_thumb_base">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/right_thumb_base.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="right_thumb" type="revolute">
+        <!-- absolute: <origin xyz="-0.0765 -0.5196 0.8341" rpy="0 0 0"/>-->
+        <origin xyz="0.0446 -0.0525 -0.019" rpy="0 0 2.268928" /> <!-- thumb angle -->
+        <parent link="right_palm" />
+        <child link="right_thumb_base" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="1.1" effort="0" velocity="0" />
+    </joint>
+
+    <link name="left_thumb_mid">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/left_finger_mid.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="_left_thumb_mid" type="revolute">
+        <origin xyz="0 0.0185 -0.007" rpy="0 0 0" />
+        <parent link="left_thumb_base" />
+        <child link="left_thumb_mid" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+        <mimic joint="left_thumb" multiplier="1" offset="0" />
+    </joint>
+
+    <link name="right_thumb_mid">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/right_finger_mid.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="_right_thumb_mid" type="revolute">
+        <origin xyz="0 -0.0185 -0.0075" rpy="0 0 0" />
+        <parent link="right_thumb_base" />
+        <child link="right_thumb_mid" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+        <mimic joint="right_thumb" multiplier="1" offset="0" />
+    </joint>
+
+    <link name="left_thumb_tip">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/left_finger_tip.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="_left_thumb_tip" type="revolute">
+        <origin xyz="-0.004 0.0201 0" rpy="0 0 0" />
+        <parent link="left_thumb_mid" />
+        <child link="left_thumb_tip" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+        <mimic joint="left_thumb" multiplier="1" offset="0" />
+    </joint>
+
+    <link name="right_thumb_tip">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/right_finger_tip.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="_right_thumb_tip" type="revolute">
+        <origin xyz="-0.004 -0.02 0.0" rpy="0 0 0" />
+        <parent link="right_thumb_mid" />
+        <child link="right_thumb_tip" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+        <mimic joint="right_thumb" multiplier="1" offset="0" />
+    </joint>
+
+    <link name="left_index_base">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/left_finger_base_neg.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="left_index" type="revolute">
+        <!-- absolute: <origin xyz="-0.0940 0.5732 0.8592" rpy="0 0 0"/>-->
+        <origin xyz="0.0277 0.1061 -0.004" rpy="0 0 -0.1047198" />
+        <parent link="left_palm" />
+        <child link="left_index_base" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="-1.1" effort="0" velocity="0" />
+    </joint>
+
+    <link name="right_index_base">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/right_finger_base_neg.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="right_index" type="revolute">
+        <!-- absolute: <origin xyz="-0.0934 -0.5772 0.8491" rpy="0 0 0"/>-->
+        <origin xyz="0.0277 -0.1101 -0.004" rpy="0 0 0.1047198" />
+        <parent link="right_palm" />
+        <child link="right_index_base" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="1.1" effort="0" velocity="0" />
+    </joint>
+
+    <link name="left_index_mid">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/left_finger_mid.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="_left_index_mid" type="revolute">
+        <origin xyz="0 0.0198 -0.0028" rpy="0 0 0" />
+        <parent link="left_index_base" />
+        <child link="left_index_mid" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+        <mimic joint="left_index" multiplier="1" offset="0" />
+    </joint>
+
+    <link name="right_index_mid">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/right_finger_mid.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="_right_index_mid" type="revolute">
+        <origin xyz="0 -0.0198 -0.0028" rpy="0 0 0" />
+        <parent link="right_index_base" />
+        <child link="right_index_mid" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+        <mimic joint="right_index" multiplier="1" offset="0" />
+    </joint>
+
+    <link name="left_index_tip">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/left_finger_tip.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="_left_index_tip" type="revolute">
+        <origin xyz="-0.004 0.02 0" rpy="0 0 0" />
+        <parent link="left_index_mid" />
+        <child link="left_index_tip" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+        <mimic joint="left_index" multiplier="1" offset="0" />
+    </joint>
+
+    <link name="right_index_tip">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/right_finger_tip.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="_right_index_tip" type="revolute">
+        <origin xyz="-0.004 -0.02 0" rpy="0 0 0" />
+        <parent link="right_index_mid" />
+        <child link="right_index_tip" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+        <mimic joint="right_index" multiplier="1" offset="0" />
+    </joint>
+
+    <link name="left_middle_base">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/left_finger_base_pos.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="left_middle" type="revolute">
+        <!-- absolute: <origin xyz="-0.1197 0.5781 0.8592" rpy="0 0 0"/>-->
+        <origin xyz="0.002 0.111 -0.004" rpy="0 0 -0.0349066" />
+        <parent link="left_palm" />
+        <child link="left_middle_base" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="-1.1" effort="0" velocity="0" />
+    </joint>
+
+    <link name="right_middle_base">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/right_finger_base_pos.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="right_middle" type="revolute">
+        <!-- absolute: <origin xyz="-0.1191 -0.5821 0.8491" rpy="0 0 0"/>-->
+        <origin xyz="0.002 -0.115 -0.004" rpy="0 0 0.0349066" />
+        <parent link="right_palm" />
+        <child link="right_middle_base" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="1.1" effort="0" velocity="0" />
+    </joint>
+
+    <link name="left_middle_mid">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/left_finger_mid.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="_left_middle_mid" type="revolute">
+        <origin xyz="0 0.0198 -0.0028" rpy="0 0 0" />
+        <parent link="left_middle_base" />
+        <child link="left_middle_mid" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+        <mimic joint="left_middle" multiplier="1" offset="0" />
+    </joint>
+
+    <link name="right_middle_mid">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/right_finger_mid.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="_right_middle_mid" type="revolute">
+        <origin xyz="0 -0.0198 -0.0028" rpy="0 0 0" />
+        <parent link="right_middle_base" />
+        <child link="right_middle_mid" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+        <mimic joint="right_middle" multiplier="1" offset="0" />
+    </joint>
+
+    <link name="left_middle_tip">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/left_finger_tip.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="_left_middle_tip" type="revolute">
+        <origin xyz="0.004 0.02 0" rpy="0 0 0" />
+        <parent link="left_middle_mid" />
+        <child link="left_middle_tip" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+        <mimic joint="left_middle" multiplier="1" offset="0" />
+    </joint>
+
+    <link name="right_middle_tip">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/right_finger_tip.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="_right_middle_tip" type="revolute">
+        <origin xyz="0.004 -0.02 0" rpy="0 0 0" />
+        <parent link="right_middle_mid" />
+        <child link="right_middle_tip" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+        <mimic joint="right_middle" multiplier="1" offset="0" />
+    </joint>
+
+    <link name="left_ring_base">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/left_finger_base_neg.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="left_ring" type="revolute">
+        <!-- absolute: <origin xyz="-0.1326 0.5781 0.8592" rpy="0 0 0"/>-->
+        <origin xyz="-0.0109 0.111 -0.004" rpy="0 0 0.0349066" />
+        <parent link="left_palm" />
+        <child link="left_ring_base" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="-1.1" effort="0" velocity="0" />
+    </joint>
+
+    <link name="right_ring_base">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/right_finger_base_neg.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="right_ring" type="revolute">
+        <!-- absolute: <origin xyz="-0.1320 -0.5821 0.8491" rpy="0 0 0"/>-->
+        <origin xyz="-0.0109 -0.115 -0.004" rpy="0 0 -0.0349066" />
+        <parent link="right_palm" />
+        <child link="right_ring_base" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="1.1" effort="0" velocity="0" />
+    </joint>
+
+    <link name="left_ring_mid">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/left_finger_mid.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="_left_ring_mid" type="revolute">
+        <origin xyz="0 0.0199 -0.0028" rpy="0 0 0" />
+        <parent link="left_ring_base" />
+        <child link="left_ring_mid" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+        <mimic joint="left_ring" multiplier="1" offset="0" />
+    </joint>
+
+    <link name="right_ring_mid">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/right_finger_mid.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="_right_ring_mid" type="revolute">
+        <origin xyz="0 -0.0199 -0.0028" rpy="0 0 0" />
+        <parent link="right_ring_base" />
+        <child link="right_ring_mid" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+        <mimic joint="right_ring" multiplier="1" offset="0" />
+    </joint>
+
+    <link name="left_ring_tip">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/left_finger_tip.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="_left_ring_tip" type="revolute">
+        <origin xyz="-0.004 0.02 0" rpy="0 0 0" />
+        <parent link="left_ring_mid" />
+        <child link="left_ring_tip" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+        <mimic joint="left_ring" multiplier="1" offset="0" />
+    </joint>
+
+    <link name="right_ring_tip">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/right_finger_tip.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="_right_ring_tip" type="revolute">
+        <origin xyz="-0.004 -0.02 0" rpy="0 0 0" />
+        <parent link="right_ring_mid" />
+        <child link="right_ring_tip" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+        <mimic joint="right_ring" multiplier="1" offset="0" />
+    </joint>
+
+    <link name="left_pinky_base">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/left_finger_base_pos.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="left_pinky" type="revolute">
+        <!-- absolute: <origin xyz="-0.1623 0.5732 0.8592" rpy="0 0 0"/>-->
+        <origin xyz="-0.0406 0.1061 -0.004" rpy="0 0 0.1047198" />
+        <parent link="left_palm" />
+        <child link="left_pinky_base" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="-1.1" effort="0" velocity="0" />
+    </joint>
+
+    <link name="right_pinky_base">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/right_finger_base_pos.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="right_pinky" type="revolute">
+        <!-- absolute: <origin xyz="-0.1617 -0.5772 0.8491" rpy="0 0 0"/>-->
+        <origin xyz="-0.0406 -0.1101 -0.004" rpy="0 0 -0.1047198" />
+        <parent link="right_palm" />
+        <child link="right_pinky_base" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="1.1" effort="0" velocity="0" />
+    </joint>
+
+    <link name="left_pinky_mid">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/left_finger_mid.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="_left_pinky_mid" type="revolute">
+        <origin xyz="0 0.0198 -0.0028" rpy="0 0 0" />
+        <parent link="left_pinky_base" />
+        <child link="left_pinky_mid" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+        <mimic joint="left_pinky" multiplier="1" offset="0" />
+    </joint>
+
+    <link name="right_pinky_mid">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/right_finger_mid.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="_right_pinky_mid" type="revolute">
+        <origin xyz="0 -0.0198 -0.0028" rpy="0 0 0" />
+        <parent link="right_pinky_base" />
+        <child link="right_pinky_mid" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+        <mimic joint="right_pinky" multiplier="1" offset="0" />
+    </joint>
+
+    <link name="left_pinky_tip">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/left_finger_tip.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="_left_pinky_tip" type="revolute">
+        <origin xyz="0.004 0.02 0" rpy="0 0 0" />
+        <parent link="left_pinky_mid" />
+        <child link="left_pinky_tip" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+        <mimic joint="left_pinky" multiplier="1" offset="0" />
+    </joint>
+
+    <link name="right_pinky_tip">
+        <visual>
+            <geometry>
+                <mesh filename="package://mc_robot_description/meshes/mc_one/right_finger_tip.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="_right_pinky_tip" type="revolute">
+        <origin xyz="0.004 -0.02 0" rpy="0 0 0" />
+        <parent link="right_pinky_mid" />
+        <child link="right_pinky_tip" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+        <mimic joint="right_pinky" multiplier="1" offset="0" />
+    </joint>
+
+    <link name="chest_camera">
+        <visual>
+            <geometry>
+                <mesh
+                    filename="package://mc_robot_description/meshes/mc_one/camera.stl" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint
+        name="chest_camera"
+        type="revolute">
+        <origin
+            xyz="0.048749 0 0.3"
+            rpy="0 0 0" />
+        <parent link="torso" />
+        <child link="chest_camera" />
+        <axis xyz="0 1 0" />
+        <limit
+            lower="-0.4"
+            upper="0.4"
+            effort="0"
+            velocity="0" />
+    </joint>
+
+    <link name="chest_camera_sensor"/>
+    <joint name="camera_sensor_joint" type="fixed">
+        <origin xyz="0.03 0 0" rpy="0 0 0" />
+        <parent link="chest_camera" />
+        <child link="chest_camera_sensor" />
+    </joint>
+    
+</robot>
