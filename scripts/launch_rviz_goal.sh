@@ -15,21 +15,21 @@ fi
 # -------------------------
 # Args
 # -------------------------
-USE_GUI="false"
+USE_JSP="false"
 EXTRA_LAUNCH_ARGS=()
 
 print_usage() {
   cat <<EOF
 Usage:
-  ./run_rviz.sh [--gui] [--gui=true|false] [--] [extra ros2 launch args...]
+  ./run_rviz.sh [--jsp] [--jsp=true|false] [--] [extra ros2 launch args...]
 
 Examples:
   ./run_rviz.sh
-  ./run_rviz.sh --gui
-  ./run_rviz.sh --gui=true
-  ./run_rviz.sh --gui=false
+  ./run_rviz.sh --jsp
+  ./run_rviz.sh --jsp=true
+  ./run_rviz.sh --jsp=false
   ./run_rviz.sh -- use_joint_state_publisher_gui:=true
-  ./run_rviz.sh --gui -- rviz_config:=/context/rviz/animation.rviz
+  ./run_rviz.sh --jsp -- rviz_config:=/context/rviz/animation.rviz
 EOF
 }
 
@@ -46,12 +46,12 @@ parse_bool() {
 
 while [ $# -gt 0 ]; do
   case "$1" in
-    --gui|--jsp-gui|--use-gui)
-      USE_GUI="true"
+    --jsp)
+      USE_JSP="true"
       shift
       ;;
-    --gui=*)
-      USE_GUI="$(parse_bool "${1#*=}")"
+    --jsp=*)
+      USE_JSP="$(parse_bool "${1#*=}")"
       shift
       ;;
     -h|--help)
@@ -71,19 +71,18 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-# Always set our launch arg unless user provided it explicitly in EXTRA_LAUNCH_ARGS
-# (simple check; prevents duplicates)
-HAS_GUI_ARG="false"
+# Prevent duplicate use_joint_state_publisher_gui args
+HAS_JSP_ARG="false"
 for a in "${EXTRA_LAUNCH_ARGS[@]}"; do
   if [[ "$a" == use_joint_state_publisher_gui:=* ]]; then
-    HAS_GUI_ARG="true"
+    HAS_JSP_ARG="true"
     break
   fi
 done
 
 LAUNCH_ARGS=()
-if [ "$HAS_GUI_ARG" != "true" ]; then
-  LAUNCH_ARGS+=("use_joint_state_publisher_gui:=${USE_GUI}")
+if [ "$HAS_JSP_ARG" != "true" ]; then
+  LAUNCH_ARGS+=("use_joint_state_publisher_gui:=${USE_JSP}")
 fi
 LAUNCH_ARGS+=("${EXTRA_LAUNCH_ARGS[@]}")
 
@@ -95,4 +94,4 @@ docker run --rm -it \
   -v "$XAUTH":/root/.Xauthority:ro \
   -e QT_X11_NO_MITSHM=1 \
   mindchildren/mc_robot_description:v0.1 \
-  ros2 launch mc_robot_description rviz_current.py "${LAUNCH_ARGS[@]}"
+  ros2 launch mc_robot_description rviz_goal.launch.py "${LAUNCH_ARGS[@]}"
