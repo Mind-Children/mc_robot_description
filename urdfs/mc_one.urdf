@@ -6,7 +6,7 @@
     The joints are named exactly like the axes of the jointsets.
     -->
 
-    <link name="base">
+    <link name="base_link">
         <visual>
             <geometry>
                 <mesh
@@ -21,7 +21,7 @@
     <link name="wheel_middle" />
     <joint name="_wheel_middle" type="fixed">
         <origin xyz="0 0 0.076" rpy="0 0 0" />
-        <parent link="base" />
+        <parent link="base_link" />
         <child link="wheel_middle" />
     </joint>
 
@@ -74,7 +74,7 @@
     </link>
     <joint name="knees" type="revolute">
         <origin xyz="-0.0275 0 0.302" rpy="0 0 0" />
-        <parent link="base" />
+        <parent link="base_link" />
         <child link="upper_legs" />
         <axis xyz="0 1 0" />
         <limit lower="-1.5708" upper="0.3665" effort="0" velocity="0" />
@@ -975,7 +975,7 @@
         <mimic joint="right_pinky" multiplier="1" offset="0" />
     </joint>
 
-    <link name="chest_camera">
+    <link name="chest_camera_link">
         <visual>
             <geometry>
                 <mesh
@@ -993,7 +993,7 @@
             xyz="0.048749 0 0.3"
             rpy="0 0 0" />
         <parent link="torso" />
-        <child link="chest_camera" />
+        <child link="chest_camera_link" />
         <axis xyz="0 1 0" />
         <limit
             lower="-0.4"
@@ -1005,7 +1005,7 @@
     <link name="chest_camera_sensor"/>
     <joint name="camera_sensor_joint" type="fixed">
         <origin xyz="0.03 0 0" rpy="0 0 0" />
-        <parent link="chest_camera" />
+        <parent link="chest_camera_link" />
         <child link="chest_camera_sensor" />
     </joint>
     
