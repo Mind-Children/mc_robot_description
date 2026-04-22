@@ -32,6 +32,7 @@ def generate_launch_description():
     # --- Launch arguments ---
     use_jsp_gui = LaunchConfiguration('use_joint_state_publisher_gui')
     publish_initial_joints = LaunchConfiguration('publish_initial_joints')
+    rviz_config = LaunchConfiguration('rviz_config')
 
     # --- URDF ---
     robot_description_path = os.path.join(
@@ -46,8 +47,8 @@ def generate_launch_description():
     # Force jsp_gui sliders to start at 0 for every actuatable joint.
     jsp_zero_params = _collect_zero_params(robot_description_path)
 
-    # --- RViz config ---
-    rviz_config_path = os.path.join(
+    # --- RViz config (default to packaged animation.rviz; override via arg) ---
+    default_rviz_config_path = os.path.join(
         get_package_share_directory('mc_robot_description'),
         'rviz',
         'animation.rviz'
@@ -77,7 +78,7 @@ def generate_launch_description():
         package='rviz2',
         executable='rviz2',
         name='rviz2',
-        arguments=['-d', rviz_config_path],
+        arguments=['-d', rviz_config],
         output='screen',
     )
 
@@ -101,6 +102,11 @@ def generate_launch_description():
             default_value='true',
             description='If true, publishes one JointState with all joints at 0 '
                         'to /current_joint_states at startup to seed the TF tree.',
+        ),
+        DeclareLaunchArgument(
+            'rviz_config',
+            default_value=default_rviz_config_path,
+            description='Path to the RViz2 .rviz config file to load.',
         ),
         robot_state_publisher_node,
         joint_state_publisher_gui_node,
