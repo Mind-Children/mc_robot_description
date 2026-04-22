@@ -1,0 +1,22 @@
+# accidental ROS colcon stuff
+build/
+install/
+log/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# secrets
+.env
+
+# editors / IDEs
+.vscode/
+.claude/
+.idea/
+
+# OS cruft
+.DS_Store
+*~
+*.swp

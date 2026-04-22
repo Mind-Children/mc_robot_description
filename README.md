@@ -121,3 +121,38 @@ In this mode, RViz acts purely as a **visualizer**, reflecting the live or goal 
 Make sure only **one source** publishes a given joint state topic at a time.
 
 ---
+
+## Launch Arguments
+
+### `publish_initial_joints` (rviz_current only, default: `true`)
+
+On startup, `rviz_current.launch.py` fires a one-shot node (`init_joint_states_once.py`)
+that publishes a single `sensor_msgs/JointState` with every joint at `0.0` to
+`/current_joint_states`, then exits. This seeds the TF tree so RViz shows the
+robot immediately — you don't have to wait for `mc_core` (or any upstream joint
+state publisher) to come online.
+
+Mimic joints (e.g. `hips`, finger mids/tips) are skipped in the seed message —
+`robot_state_publisher` derives them from their master joint.
+
+Pass `publish_initial_joints:=false` to disable the seed, e.g. when another
+node is already running and you want to avoid the transient all-zero frame:
+
+```bash
+./scripts/launch_rviz_current.sh publish_initial_joints:=false
+# combine with --jsp:
+./scripts/launch_rviz_current.sh --jsp publish_initial_joints:=false
+```
+
+Turn it off when:
+
+* `mc_core` is already publishing `/current_joint_states` and you don't want
+  the brief 0-frame flash before `mc_core`'s first message arrives.
+* You want to capture a specific non-zero pose via `--jsp` and the seed would
+  reset your sliders.
+
+### `use_joint_state_publisher_gui` (default: `false`)
+
+Toggled by the `--jsp` flag in the shell launcher. See "Case 1" above.
+
+---

@@ -6,8 +6,11 @@
     The joints are named exactly like the axes of the jointsets.
     -->
 
+    <!-- base_link is the wheel-axle midpoint (where the old "wheel_middle" was).
+         The base.stl visual is offset by z=-0.076 so its world pose is unchanged. -->
     <link name="base_link">
         <visual>
+            <origin xyz="0 0 -0.076" rpy="0 0 0" />
             <geometry>
                 <mesh
                     filename="package://mc_robot_description/meshes/mc_one/base.stl" />
@@ -17,13 +20,6 @@
             </material>
         </visual>
     </link>
-
-    <link name="wheel_middle" />
-    <joint name="_wheel_middle" type="fixed">
-        <origin xyz="0 0 0.076" rpy="0 0 0" />
-        <parent link="base_link" />
-        <child link="wheel_middle" />
-    </joint>
 
     <link name="left_wheel">
         <visual>
@@ -38,7 +34,7 @@
     </link>
     <joint name="left_wheel" type="continuous">
         <origin xyz="0 0.182 0" rpy="0 0 0" />
-        <parent link="wheel_middle" />
+        <parent link="base_link" />
         <child link="left_wheel" />
         <axis xyz="0 1 0" />
     </joint>
@@ -56,7 +52,7 @@
     </link>
     <joint name="right_wheel" type="continuous">
         <origin xyz="0 -0.182 0" rpy="0 0 0" />
-        <parent link="wheel_middle" />
+        <parent link="base_link" />
         <child link="right_wheel" />
         <axis xyz="0 1 0" />
     </joint>
@@ -73,7 +69,7 @@
         </visual>
     </link>
     <joint name="knees" type="revolute">
-        <origin xyz="-0.0275 0 0.302" rpy="0 0 0" />
+        <origin xyz="-0.0275 0 0.226" rpy="0 0 0" />
         <parent link="base_link" />
         <child link="upper_legs" />
         <axis xyz="0 1 0" />
@@ -96,7 +92,8 @@
         <parent link="upper_legs" />
         <child link="pelvis" />
         <axis xyz="0 1 0" />
-        <limit lower="0.3665" upper="-1.5708" effort="0" velocity="0" />
+        <limit lower="-0.3665" upper="1.5708" effort="0" velocity="0" />
+        <mimic joint="knees" multiplier="-1" offset="0" />
     </joint>
 
     <link name="torso">
@@ -156,8 +153,8 @@
         <limit lower="0.4363" upper="-0.6982" effort="0" velocity="0" />
     </joint>
 
-    <link name="eyes"/>
-    <link name="eyes_apo"/>
+    <link name="eyes" />
+    <link name="eyes_apo" />
     <joint name="eyes_x" type="revolute">
         <origin xyz="0 0 0" rpy="0 0 0" />
         <parent link="head" />
@@ -522,7 +519,8 @@
     <link name="left_index_base">
         <visual>
             <geometry>
-                <mesh filename="package://mc_robot_description/meshes/mc_one/left_finger_base_neg.stl" />
+                <mesh
+                    filename="package://mc_robot_description/meshes/mc_one/left_finger_base_neg.stl" />
             </geometry>
             <material name="gray">
                 <color rgba="0.5 0.5 0.5 1.0" />
@@ -541,7 +539,8 @@
     <link name="right_index_base">
         <visual>
             <geometry>
-                <mesh filename="package://mc_robot_description/meshes/mc_one/right_finger_base_neg.stl" />
+                <mesh
+                    filename="package://mc_robot_description/meshes/mc_one/right_finger_base_neg.stl" />
             </geometry>
             <material name="gray">
                 <color rgba="0.5 0.5 0.5 1.0" />
@@ -636,7 +635,8 @@
     <link name="left_middle_base">
         <visual>
             <geometry>
-                <mesh filename="package://mc_robot_description/meshes/mc_one/left_finger_base_pos.stl" />
+                <mesh
+                    filename="package://mc_robot_description/meshes/mc_one/left_finger_base_pos.stl" />
             </geometry>
             <material name="gray">
                 <color rgba="0.5 0.5 0.5 1.0" />
@@ -655,7 +655,8 @@
     <link name="right_middle_base">
         <visual>
             <geometry>
-                <mesh filename="package://mc_robot_description/meshes/mc_one/right_finger_base_pos.stl" />
+                <mesh
+                    filename="package://mc_robot_description/meshes/mc_one/right_finger_base_pos.stl" />
             </geometry>
             <material name="gray">
                 <color rgba="0.5 0.5 0.5 1.0" />
@@ -750,7 +751,8 @@
     <link name="left_ring_base">
         <visual>
             <geometry>
-                <mesh filename="package://mc_robot_description/meshes/mc_one/left_finger_base_neg.stl" />
+                <mesh
+                    filename="package://mc_robot_description/meshes/mc_one/left_finger_base_neg.stl" />
             </geometry>
             <material name="gray">
                 <color rgba="0.5 0.5 0.5 1.0" />
@@ -769,7 +771,8 @@
     <link name="right_ring_base">
         <visual>
             <geometry>
-                <mesh filename="package://mc_robot_description/meshes/mc_one/right_finger_base_neg.stl" />
+                <mesh
+                    filename="package://mc_robot_description/meshes/mc_one/right_finger_base_neg.stl" />
             </geometry>
             <material name="gray">
                 <color rgba="0.5 0.5 0.5 1.0" />
@@ -864,7 +867,8 @@
     <link name="left_pinky_base">
         <visual>
             <geometry>
-                <mesh filename="package://mc_robot_description/meshes/mc_one/left_finger_base_pos.stl" />
+                <mesh
+                    filename="package://mc_robot_description/meshes/mc_one/left_finger_base_pos.stl" />
             </geometry>
             <material name="gray">
                 <color rgba="0.5 0.5 0.5 1.0" />
@@ -883,7 +887,8 @@
     <link name="right_pinky_base">
         <visual>
             <geometry>
-                <mesh filename="package://mc_robot_description/meshes/mc_one/right_finger_base_pos.stl" />
+                <mesh
+                    filename="package://mc_robot_description/meshes/mc_one/right_finger_base_pos.stl" />
             </geometry>
             <material name="gray">
                 <color rgba="0.5 0.5 0.5 1.0" />
@@ -990,7 +995,7 @@
         name="chest_camera"
         type="revolute">
         <origin
-            xyz="0.048749 0 0.3"
+            xyz="0.048749 0 0.336"
             rpy="0 0 0" />
         <parent link="torso" />
         <child link="chest_camera_link" />
@@ -1002,11 +1007,11 @@
             velocity="0" />
     </joint>
 
-    <link name="chest_camera_sensor"/>
+    <link name="chest_camera_sensor" />
     <joint name="camera_sensor_joint" type="fixed">
         <origin xyz="0.03 0 0" rpy="0 0 0" />
         <parent link="chest_camera_link" />
         <child link="chest_camera_sensor" />
     </joint>
-    
+
 </robot>
