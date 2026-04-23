@@ -21,6 +21,13 @@
         </visual>
     </link>
 
+    <link name="laser" />
+    <joint name="laser_mount" type="fixed">
+        <origin xyz="0 0 0.1" rpy="0 0 0" />
+        <parent link="base_link" />
+        <child link="laser" />
+    </joint>
+
     <link name="left_wheel">
         <visual>
             <geometry>
@@ -436,7 +443,7 @@
         <origin xyz="0.0446 -0.0525 -0.019" rpy="0 0 2.268928" /> <!-- thumb angle -->
         <parent link="right_palm" />
         <child link="right_thumb_base" />
-        <axis xyz="1 0 0" />
+        <axis xyz="-1 0 0" />
         <limit lower="0" upper="1.1" effort="0" velocity="0" />
     </joint>
 
@@ -473,7 +480,7 @@
         <origin xyz="0 -0.0185 -0.0075" rpy="0 0 0" />
         <parent link="right_thumb_base" />
         <child link="right_thumb_mid" />
-        <axis xyz="1 0 0" />
+        <axis xyz="-1 0 0" />
         <limit lower="0" upper="0" effort="0" velocity="0" />
         <mimic joint="right_thumb" multiplier="1" offset="0" />
     </joint>
@@ -511,7 +518,7 @@
         <origin xyz="-0.004 -0.02 0.0" rpy="0 0 0" />
         <parent link="right_thumb_mid" />
         <child link="right_thumb_tip" />
-        <axis xyz="1 0 0" />
+        <axis xyz="-1 0 0" />
         <limit lower="0" upper="0" effort="0" velocity="0" />
         <mimic joint="right_thumb" multiplier="1" offset="0" />
     </joint>
@@ -552,7 +559,7 @@
         <origin xyz="0.0277 -0.1101 -0.004" rpy="0 0 0.1047198" />
         <parent link="right_palm" />
         <child link="right_index_base" />
-        <axis xyz="1 0 0" />
+        <axis xyz="-1 0 0" />
         <limit lower="0" upper="1.1" effort="0" velocity="0" />
     </joint>
 
@@ -589,7 +596,7 @@
         <origin xyz="0 -0.0198 -0.0028" rpy="0 0 0" />
         <parent link="right_index_base" />
         <child link="right_index_mid" />
-        <axis xyz="1 0 0" />
+        <axis xyz="-1 0 0" />
         <limit lower="0" upper="0" effort="0" velocity="0" />
         <mimic joint="right_index" multiplier="1" offset="0" />
     </joint>
@@ -627,7 +634,7 @@
         <origin xyz="-0.004 -0.02 0" rpy="0 0 0" />
         <parent link="right_index_mid" />
         <child link="right_index_tip" />
-        <axis xyz="1 0 0" />
+        <axis xyz="-1 0 0" />
         <limit lower="0" upper="0" effort="0" velocity="0" />
         <mimic joint="right_index" multiplier="1" offset="0" />
     </joint>
@@ -668,7 +675,7 @@
         <origin xyz="0.002 -0.115 -0.004" rpy="0 0 0.0349066" />
         <parent link="right_palm" />
         <child link="right_middle_base" />
-        <axis xyz="1 0 0" />
+        <axis xyz="-1 0 0" />
         <limit lower="0" upper="1.1" effort="0" velocity="0" />
     </joint>
 
@@ -705,7 +712,7 @@
         <origin xyz="0 -0.0198 -0.0028" rpy="0 0 0" />
         <parent link="right_middle_base" />
         <child link="right_middle_mid" />
-        <axis xyz="1 0 0" />
+        <axis xyz="-1 0 0" />
         <limit lower="0" upper="0" effort="0" velocity="0" />
         <mimic joint="right_middle" multiplier="1" offset="0" />
     </joint>
@@ -743,7 +750,7 @@
         <origin xyz="0.004 -0.02 0" rpy="0 0 0" />
         <parent link="right_middle_mid" />
         <child link="right_middle_tip" />
-        <axis xyz="1 0 0" />
+        <axis xyz="-1 0 0" />
         <limit lower="0" upper="0" effort="0" velocity="0" />
         <mimic joint="right_middle" multiplier="1" offset="0" />
     </joint>
@@ -784,7 +791,7 @@
         <origin xyz="-0.0109 -0.115 -0.004" rpy="0 0 -0.0349066" />
         <parent link="right_palm" />
         <child link="right_ring_base" />
-        <axis xyz="1 0 0" />
+        <axis xyz="-1 0 0" />
         <limit lower="0" upper="1.1" effort="0" velocity="0" />
     </joint>
 
@@ -821,7 +828,7 @@
         <origin xyz="0 -0.0199 -0.0028" rpy="0 0 0" />
         <parent link="right_ring_base" />
         <child link="right_ring_mid" />
-        <axis xyz="1 0 0" />
+        <axis xyz="-1 0 0" />
         <limit lower="0" upper="0" effort="0" velocity="0" />
         <mimic joint="right_ring" multiplier="1" offset="0" />
     </joint>
@@ -859,7 +866,7 @@
         <origin xyz="-0.004 -0.02 0" rpy="0 0 0" />
         <parent link="right_ring_mid" />
         <child link="right_ring_tip" />
-        <axis xyz="1 0 0" />
+        <axis xyz="-1 0 0" />
         <limit lower="0" upper="0" effort="0" velocity="0" />
         <mimic joint="right_ring" multiplier="1" offset="0" />
     </joint>
@@ -900,7 +907,7 @@
         <origin xyz="-0.0406 -0.1101 -0.004" rpy="0 0 -0.1047198" />
         <parent link="right_palm" />
         <child link="right_pinky_base" />
-        <axis xyz="1 0 0" />
+        <axis xyz="-1 0 0" />
         <limit lower="0" upper="1.1" effort="0" velocity="0" />
     </joint>
 
@@ -937,7 +944,7 @@
         <origin xyz="0 -0.0198 -0.0028" rpy="0 0 0" />
         <parent link="right_pinky_base" />
         <child link="right_pinky_mid" />
-        <axis xyz="1 0 0" />
+        <axis xyz="-1 0 0" />
         <limit lower="0" upper="0" effort="0" velocity="0" />
         <mimic joint="right_pinky" multiplier="1" offset="0" />
     </joint>
@@ -975,7 +982,7 @@
         <origin xyz="0.004 -0.02 0" rpy="0 0 0" />
         <parent link="right_pinky_mid" />
         <child link="right_pinky_tip" />
-        <axis xyz="1 0 0" />
+        <axis xyz="-1 0 0" />
         <limit lower="0" upper="0" effort="0" velocity="0" />
         <mimic joint="right_pinky" multiplier="1" offset="0" />
     </joint>
