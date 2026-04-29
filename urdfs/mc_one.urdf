@@ -28,6 +28,13 @@
         <child link="laser" />
     </joint>
 
+    <link name="imu" />
+    <joint name="imu_mount" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="base_link" />
+        <child link="imu" />
+    </joint>
+
     <link name="left_wheel">
         <visual>
             <geometry>
