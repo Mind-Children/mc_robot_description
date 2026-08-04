@@ -1,0 +1,533 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot name="mc1">
+  <link name="base_link">
+    <inertial>
+      <origin xyz="-0.0020465 0 0.0657881" rpy="0 0 0" />
+      <mass value="0.670115" />
+      <inertia ixx="0.00130745" ixy="0" ixz="1.66129e-05" iyy="0.00117563" iyz="0" izz="0.000417271" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/base_link.stl" />
+      </geometry>
+      <material name="default_gray">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/base_link.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="waist_link">
+    <inertial>
+      <origin xyz="0.00101432 0 0.23358" rpy="0 0 0" />
+      <mass value="1.01628" />
+      <inertia ixx="0.00309667" ixy="0" ixz="1.13476e-05" iyy="0.00265805" iyz="0" izz="0.000889682" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/waist_link.stl" />
+      </geometry>
+      <material name="default_gray">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/waist_link.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="right_arm_link_1">
+    <inertial>
+      <origin xyz="0.00112014 -0.00456702 0.0867629" rpy="0 0 0" />
+      <mass value="0.598142" />
+      <inertia ixx="0.000838571" ixy="4.20801e-06" ixz="-5.42317e-06" iyy="0.000842982"
+        iyz="7.45977e-05" izz="0.0002692" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_1.stl" />
+      </geometry>
+      <material name="default_gray">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_1.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="right_arm_link_2">
+    <inertial>
+      <origin xyz="0 0.0337291 0.00336159" rpy="0 0 0" />
+      <mass value="0.0505996" />
+      <inertia ixx="3.54246e-05" ixy="0" ixz="0" iyy="2.20716e-05" iyz="4.02322e-06"
+        izz="2.72006e-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_2.stl" />
+      </geometry>
+      <material name="default_gray">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_2.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="right_arm_link_3">
+    <inertial>
+      <origin xyz="0.000173544 -0.00416705 0.116808" rpy="0 0 0" />
+      <mass value="0.450933" />
+      <inertia ixx="0.000601063" ixy="1.23503e-06" ixz="0" iyy="0.000606012" iyz="4.88662e-05"
+        izz="0.000163899" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_3.stl" />
+      </geometry>
+      <material name="default_gray">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_3.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="right_arm_link_4">
+    <inertial>
+      <origin xyz="-0.0106613 0.0355467 0.00426301" rpy="0 0 0" />
+      <mass value="0.0535638" />
+      <inertia ixx="3.60797e-05" ixy="8.11546e-06" ixz="-2.43243e-06" iyy="2.6006e-05"
+        iyz="5.3372e-06" izz="3.52098e-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_4.stl" />
+      </geometry>
+      <material name="default_gray">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_4.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="right_arm_link_5">
+    <inertial>
+      <origin xyz="0.000173544 -0.00416642 0.119808" rpy="0 0 0" />
+      <mass value="0.450933" />
+      <inertia ixx="0.000601063" ixy="1.23503e-06" ixz="0" iyy="0.000606012" iyz="4.88638e-05"
+        izz="0.000163899" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_5.stl" />
+      </geometry>
+      <material name="default_gray">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_5.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="right_arm_link_6">
+    <inertial>
+      <origin xyz="0 0.0337061 0.00460099" rpy="0 0 0" />
+      <mass value="0.0496317" />
+      <inertia ixx="3.32698e-05" ixy="0" ixz="0" iyy="1.97787e-05" iyz="4.91689e-06"
+        izz="2.70589e-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_6.stl" />
+      </geometry>
+      <material name="default_gray">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_6.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="left_arm_link_1">
+    <inertial>
+      <origin xyz="0.00112014 -0.00456656 0.0867629" rpy="0 0 0" />
+      <mass value="0.598142" />
+      <inertia ixx="0.000838571" ixy="4.20798e-06" ixz="-5.42319e-06" iyy="0.000842982"
+        iyz="7.45947e-05" izz="0.0002692" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_1.stl" />
+      </geometry>
+      <material name="default_gray">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_1.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="left_arm_link_2">
+    <inertial>
+      <origin xyz="0 0.0337291 0.00336159" rpy="0 0 0" />
+      <mass value="0.0505996" />
+      <inertia ixx="3.54246e-05" ixy="0" ixz="0" iyy="2.20716e-05" iyz="4.02322e-06"
+        izz="2.72006e-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_2.stl" />
+      </geometry>
+      <material name="default_gray">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_2.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="left_arm_link_3">
+    <inertial>
+      <origin xyz="0.000173544 -0.00416643 0.116808" rpy="0 0 0" />
+      <mass value="0.450933" />
+      <inertia ixx="0.000601063" ixy="1.23503e-06" ixz="0" iyy="0.000606012" iyz="4.88638e-05"
+        izz="0.000163899" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_3.stl" />
+      </geometry>
+      <material name="default_gray">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_3.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="left_arm_link_4">
+    <inertial>
+      <origin xyz="-0.0106613 0.0355466 0.00426319" rpy="0 0 0" />
+      <mass value="0.0535638" />
+      <inertia ixx="3.60797e-05" ixy="8.11547e-06" ixz="-2.43239e-06" iyy="2.60059e-05"
+        iyz="5.33715e-06" izz="3.52098e-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_4.stl" />
+      </geometry>
+      <material name="default_gray">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_4.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="left_arm_link_5">
+    <inertial>
+      <origin xyz="0.000173544 -0.00416706 0.119808" rpy="0 0 0" />
+      <mass value="0.450933" />
+      <inertia ixx="0.000601063" ixy="1.23503e-06" ixz="0" iyy="0.000606012" iyz="4.88662e-05"
+        izz="0.000163899" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_5.stl" />
+      </geometry>
+      <material name="default_gray">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_5.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="left_arm_link_6">
+    <inertial>
+      <origin xyz="0 0.0337061 0.00460099" rpy="0 0 0" />
+      <mass value="0.0496317" />
+      <inertia ixx="3.32698e-05" ixy="0" ixz="0" iyy="1.97787e-05" iyz="4.91689e-06"
+        izz="2.70589e-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_6.stl" />
+      </geometry>
+      <material name="default_gray">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/arm_link_6.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_arm_joint_6" type="revolute">
+    <origin xyz="0 0 0.153201" rpy="1.5707963267949 0 0" />
+    <parent link="right_arm_link_5" />
+    <child link="right_arm_link_6" />
+    <axis xyz="0 0 1" />
+    <limit effort="4.1" velocity="45.55" lower="-1.5707963267949" upper="1.5707963267949" />
+  </joint>
+  <joint name="right_arm_joint_5" type="revolute">
+    <origin xyz="-0.0199998 0 0" rpy="-1.5707963267949 0 0" />
+    <parent link="right_arm_link_4" />
+    <child link="right_arm_link_5" />
+    <axis xyz="0 0 1" />
+    <limit effort="4.1" velocity="45.55" lower="-3.14159265358979" upper="0.261799387799149" />
+  </joint>
+  <joint name="right_arm_joint_4" type="revolute">
+    <origin xyz="0 0 0.150201" rpy="1.5707963267949 0 0" />
+    <parent link="right_arm_link_3" />
+    <child link="right_arm_link_4" />
+    <axis xyz="0 0 1" />
+    <limit effort="4.1" velocity="45.55" lower="-1.34390352403563" upper="0" />
+  </joint>
+  <joint name="right_arm_joint_3" type="revolute">
+    <origin xyz="0 0 0" rpy="-1.5707963267949 0 0" />
+    <parent link="right_arm_link_2" />
+    <child link="right_arm_link_3" />
+    <axis xyz="0 0 1" />
+    <limit effort="4.1" velocity="45.55" lower="-0.698131700797732" upper="2.61799387799149" />
+  </joint>
+  <joint name="right_arm_joint_2" type="revolute">
+    <origin xyz="0 0 0.119201" rpy="1.5707963267949 0 0" />
+    <parent link="right_arm_link_1" />
+    <child link="right_arm_link_2" />
+    <axis xyz="0 0 1" />
+    <limit effort="7" velocity="18.85" lower="-1.83259571459405" upper="1.30899693899575" />
+  </joint>
+  <joint name="right_arm_joint_1" type="revolute">
+    <origin xyz="0 -0.0443877 0.282191" rpy="0 -1.309 1.5707963267949" />
+    <parent link="waist_link" />
+    <child link="right_arm_link_1" />
+    <axis xyz="0 0 1" />
+    <limit effort="7" velocity="18.85" lower="-3.66519142918809" upper="0" />
+  </joint>
+  <joint name="left_arm_joint_6" type="revolute">
+    <origin xyz="0 0 0.153201" rpy="1.5707963267949 0 0" />
+    <parent link="left_arm_link_5" />
+    <child link="left_arm_link_6" />
+    <axis xyz="0 0 1" />
+    <limit effort="4.1" velocity="45.55" lower="-1.5707963267949" upper="1.5707963267949" />
+  </joint>
+  <joint name="left_arm_joint_5" type="revolute">
+    <origin xyz="-0.0199998 0 0" rpy="-1.5707963267949 0 0" />
+    <parent link="left_arm_link_4" />
+    <child link="left_arm_link_5" />
+    <axis xyz="0 0 1" />
+    <limit effort="4.1" velocity="45.55" lower="-0.261799387799149" upper="3.14159265358979" />
+  </joint>
+  <joint name="left_arm_joint_4" type="revolute">
+    <origin xyz="0 0 0.150201" rpy="1.5707963267949 0 0" />
+    <parent link="left_arm_link_3" />
+    <child link="left_arm_link_4" />
+    <axis xyz="0 0 1" />
+    <limit effort="4.1" velocity="45.55" lower="-1.34390352403563" upper="0" />
+  </joint>
+  <joint name="left_arm_joint_3" type="revolute">
+    <origin xyz="0 0 0" rpy="-1.5707963267949 0 0" />
+    <parent link="left_arm_link_2" />
+    <child link="left_arm_link_3" />
+    <axis xyz="0 0 1" />
+    <limit effort="4.1" velocity="45.55" lower="-2.61799387799149" upper="0.698131700797732" />
+  </joint>
+  <joint name="left_arm_joint_2" type="revolute">
+    <origin xyz="0 0 0.119201" rpy="1.5707963267949 0 0" />
+    <parent link="left_arm_link_1" />
+    <child link="left_arm_link_2" />
+    <axis xyz="0 0 1" />
+    <limit effort="7" velocity="18.85" lower="-1.83259571459405" upper="1.30899693899575" />
+  </joint>
+  <joint name="left_arm_joint_1" type="revolute">
+    <origin xyz="0 0.0443862 0.282191" rpy="0 -1.309 -1.5707963267949" />
+    <parent link="waist_link" />
+    <child link="left_arm_link_1" />
+    <axis xyz="0 0 1" />
+    <limit effort="7" velocity="18.85" lower="0" upper="3.66519142918809" />
+  </joint>
+  <joint name="waist_joint" type="revolute">
+    <origin xyz="-0.00249962 0 0" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="waist_link" />
+    <axis xyz="0 0 1" />
+    <limit effort="50" velocity="2" lower="-3.14159265358979" upper="3.14159265358979" />
+  </joint>
+  <link name="right_arm_tcp">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.2" />
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.001 0.001 0.001" />
+      </geometry>
+      <material name="dummy_frame_transparent">
+        <color rgba="0 0 0 0" />
+      </material>
+    </visual>
+  </link>
+  <joint name="right_arm_tcp_joint" type="fixed">
+    <origin xyz="0 0.1 0" rpy="-1.5707963267949 0 0" />
+    <parent link="right_arm_link_6" />
+    <child link="right_arm_tcp" />
+  </joint>
+  <link name="left_arm_tcp">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.2" />
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.001 0.001 0.001" />
+      </geometry>
+      <material name="dummy_frame_transparent">
+        <color rgba="0 0 0 0" />
+      </material>
+    </visual>
+  </link>
+  <joint name="left_arm_tcp_joint" type="fixed">
+    <origin xyz="0 0.1 0" rpy="-1.5707963267949 0 0" />
+    <parent link="left_arm_link_6" />
+    <child link="left_arm_tcp" />
+  </joint>
+  <link name="realsense_mount_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.02" />
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.06 0.08 0.02" />
+      </geometry>
+      <material name="realsense_mount_gray">
+        <color rgba="0.2 0.2 0.2 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.06 0.08 0.02" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="realsense_mount_joint" type="fixed">
+    <origin xyz="0.06 0 0.3235" rpy="0 0 0" />
+    <parent link="waist_link" />
+    <child link="realsense_mount_link" />
+  </joint>
+  <link name="realsense_link">
+    <inertial>
+      <origin xyz="0.0175 0 0" rpy="0 0 0" />
+      <mass value="0.08" />
+      <inertia ixx="3e-5" ixy="0" ixz="0" iyy="3e-5" iyz="0" izz="3e-5" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/realsense.stl" />
+      </geometry>
+      <material name="realsense_black">
+        <color rgba="0.02 0.02 0.02 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0175 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.035 0.09 0.025" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="realsense_pitch_joint" type="revolute">
+    <origin xyz="0.03 0 0.015" rpy="0 0 0" />
+    <parent link="realsense_mount_link" />
+    <child link="realsense_link" />
+    <axis xyz="0 -1 0" />
+    <limit effort="2" velocity="1" lower="-0.523598775598299" upper="0.523598775598299" />
+  </joint>
+  <link name="realsense_optical_frame">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.001" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.001 0.001 0.001" />
+      </geometry>
+      <material name="dummy_frame_transparent">
+        <color rgba="0 0 0 0" />
+      </material>
+    </visual>
+  </link>
+  <joint name="realsense_optical_joint" type="fixed">
+    <origin xyz="0.035 0 0" rpy="-1.5707963267949 0 -1.5707963267949" />
+    <parent link="realsense_link" />
+    <child link="realsense_optical_frame" />
+  </joint>
+</robot>
