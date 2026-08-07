@@ -334,6 +334,23 @@
         <box size="0.411 0.45 0.321" />
       </geometry>
     </collision>
+    <!-- 后万向轮：车体自带的第二个几何体，不是独立 link —— 导入 Isaac 后与底盘是
+         同一个刚体（本模型 merge_fixed_joints=False，独立 link 会变成额外刚体+固定关节）。
+         球体是 sim 里模拟脚轮的标准做法：免转向动力学、不会卡死；低摩擦材质在
+         mc_simulation 侧按 collider prim 绑定。最低点与驱动轮接触面齐平。 -->
+    <visual>
+      <origin xyz="-0.28 0 -0.0605" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.0155" />
+      </geometry>
+      <material name="old_dark_gray" />
+    </visual>
+    <collision>
+      <origin xyz="-0.28 0 -0.0605" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.0155" />
+      </geometry>
+    </collision>
   </link>
   <link name="left_wheel">
     <inertial>
