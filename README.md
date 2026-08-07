@@ -9,13 +9,29 @@ on in the `main` branch.
 ## Contents
 
 ```
-urdf/mc1.urdf     canonical model: waist + dual 6-DOF arms + realsense pitch
-                  + TCP frames (mesh URIs: package://mc_robot_description/...)
-meshes/mc1/       STL meshes (shared by both arms)
+urdf/mc1.urdf     canonical model — FULL BODY since M9 (2026-08-06):
+                  chassis + passive wheels + legs (knees drive, hips mimic
+                  x-1 parallelogram) + waist + dual 6-DOF arms + torso
+                  shell + neck/head + old-Codey 5-finger hands at the arm
+                  TCPs + sensor frames (laser, imu, 4 down-facing cliff
+                  TOF, 2 limit switches, realsense chain, head camera
+                  120deg optical). Body segments are PLACEHOLDER geometry
+                  ported from the old Codey; they get replaced as the
+                  next-gen Onshape design lands.
+meshes/mc1/       STL meshes
 launch/display.launch.py   robot_state_publisher + joint sliders + RViz
+launch/rsp.launch.py       headless RSP (/joint_states -> /current_joint_states)
 rviz/mc1.rviz
 mc_robot_description/      Python helper — the sanctioned access path
 ```
+
+⚠ **Arm-mount constraint**: the `<side>_arm_joint_1` mount rpy on `torso`
+(`0 -1.309 ±1.5707963`) is the orientation the arm firmware's GravityFF
+closed form was generated for. Between the ground and the torso every
+joint is either yaw-about-gravity (`waist_joint`) or cancelled by the
+hips parallelogram, so the constraint holds in every pose — do NOT
+change these rpy values (or insert non-zero-rpy joints above the arms)
+without regenerating the firmware gravity model.
 
 ## Consuming the model
 

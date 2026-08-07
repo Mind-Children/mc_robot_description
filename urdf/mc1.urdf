@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <robot name="mc1">
-  <link name="base_link">
+  <link name="waist_base_link">
     <inertial>
       <origin xyz="-0.0020465 0 0.0657881" rpy="0 0 0" />
       <mass value="0.670115" />
@@ -356,8 +356,8 @@
     <limit effort="7" velocity="18.85" lower="-1.83259571459405" upper="1.30899693899575" />
   </joint>
   <joint name="right_arm_joint_1" type="revolute">
-    <origin xyz="0 -0.0443877 0.282191" rpy="0 -1.309 1.5707963267949" />
-    <parent link="waist_link" />
+    <origin xyz="0.00084 -0.09165 0.33902" rpy="0 -1.309 1.5707963267949" />
+    <parent link="torso" />
     <child link="right_arm_link_1" />
     <axis xyz="0 0 1" />
     <limit effort="7" velocity="18.85" lower="-3.66519142918809" upper="0" />
@@ -398,15 +398,15 @@
     <limit effort="7" velocity="18.85" lower="-1.83259571459405" upper="1.30899693899575" />
   </joint>
   <joint name="left_arm_joint_1" type="revolute">
-    <origin xyz="0 0.0443862 0.282191" rpy="0 -1.309 -1.5707963267949" />
-    <parent link="waist_link" />
+    <origin xyz="0.00084 0.09165 0.33902" rpy="0 -1.309 -1.5707963267949" />
+    <parent link="torso" />
     <child link="left_arm_link_1" />
     <axis xyz="0 0 1" />
     <limit effort="7" velocity="18.85" lower="0" upper="3.66519142918809" />
   </joint>
   <joint name="waist_joint" type="revolute">
     <origin xyz="-0.00249962 0 0" rpy="0 0 0" />
-    <parent link="base_link" />
+    <parent link="waist_base_link" />
     <child link="waist_link" />
     <axis xyz="0 0 1" />
     <limit effort="50" velocity="2" lower="-3.14159265358979" upper="3.14159265358979" />
@@ -529,5 +529,1117 @@
     <origin xyz="0.035 0 0" rpy="-1.5707963267949 0 -1.5707963267949" />
     <parent link="realsense_link" />
     <child link="realsense_optical_frame" />
+  </joint>
+  <!-- ============ M9 full body: chassis / legs / torso shell / head.
+       Ported from the old-Codey model (main) as PLACEHOLDER geometry;
+       segments get replaced as the next-gen Onshape design lands.
+       Arm mount rpy is a HARD constraint (firmware GravityFF). ============ -->
+  <link name="base_link">
+    <inertial>
+      <origin xyz="-0.13 0 0.1" rpy="0 0 0" />
+      <mass value="5.0" />
+      <inertia ixx="0.127" ixy="0" ixz="0" iyy="0.113" iyz="0" izz="0.155" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -0.076" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/base.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+    <collision>
+      <origin xyz="-0.1325 0 0.1155" rpy="0 0 0" />
+      <geometry>
+        <box size="0.411 0.45 0.321" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="left_wheel">
+    <inertial>
+      <origin xyz="0 0.025 0" rpy="0 0 0" />
+      <mass value="0.5" />
+      <inertia ixx="0.00082" ixy="0" ixz="0" iyy="0.0014" iyz="0" izz="0.00082" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/left_wheel.stl" />
+      </geometry>
+      <material name="old_dark_gray">
+        <color rgba="0.2 0.2 0.2 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0.025 0" rpy="1.5707963267949 0 0" />
+      <geometry>
+        <cylinder radius="0.076" length="0.05" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_wheel" type="continuous">
+    <origin xyz="0 0.182 0" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="left_wheel" />
+    <axis xyz="0 1 0" />
+    <limit effort="10" velocity="34.5" />
+  </joint>
+  <link name="right_wheel">
+    <inertial>
+      <origin xyz="0 -0.025 0" rpy="0 0 0" />
+      <mass value="0.5" />
+      <inertia ixx="0.00082" ixy="0" ixz="0" iyy="0.0014" iyz="0" izz="0.00082" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/right_wheel.stl" />
+      </geometry>
+      <material name="old_dark_gray" />
+    </visual>
+    <collision>
+      <origin xyz="0 -0.025 0" rpy="1.5707963267949 0 0" />
+      <geometry>
+        <cylinder radius="0.076" length="0.05" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_wheel" type="continuous">
+    <origin xyz="0 -0.182 0" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="right_wheel" />
+    <axis xyz="0 1 0" />
+    <limit effort="10" velocity="34.5" />
+  </joint>
+  <link name="laser">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.05" />
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.001 0.001 0.001" />
+      </geometry>
+      <material name="dummy_frame_transparent" />
+    </visual>
+  </link>
+  <joint name="laser_mount" type="fixed">
+    <origin xyz="0 0 0.1" rpy="0 0 -1.5707963267949" />
+    <parent link="base_link" />
+    <child link="laser" />
+  </joint>
+  <link name="imu">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.05" />
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.001 0.001 0.001" />
+      </geometry>
+      <material name="dummy_frame_transparent" />
+    </visual>
+  </link>
+  <joint name="imu_mount" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="imu" />
+  </joint>
+  <link name="tof_front_left">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.05" />
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.001 0.001 0.001" />
+      </geometry>
+      <material name="dummy_frame_transparent" />
+    </visual>
+  </link>
+  <joint name="tof_front_left_mount" type="fixed">
+    <origin xyz="0.06 0.20 -0.05" rpy="0 1.5707963267949 0" />
+    <parent link="base_link" />
+    <child link="tof_front_left" />
+  </joint>
+  <link name="tof_front_right">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.05" />
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.001 0.001 0.001" />
+      </geometry>
+      <material name="dummy_frame_transparent" />
+    </visual>
+  </link>
+  <joint name="tof_front_right_mount" type="fixed">
+    <origin xyz="0.06 -0.20 -0.05" rpy="0 1.5707963267949 0" />
+    <parent link="base_link" />
+    <child link="tof_front_right" />
+  </joint>
+  <link name="tof_rear_left">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.05" />
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.001 0.001 0.001" />
+      </geometry>
+      <material name="dummy_frame_transparent" />
+    </visual>
+  </link>
+  <joint name="tof_rear_left_mount" type="fixed">
+    <origin xyz="-0.32 0.20 -0.05" rpy="0 1.5707963267949 0" />
+    <parent link="base_link" />
+    <child link="tof_rear_left" />
+  </joint>
+  <link name="tof_rear_right">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.05" />
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.001 0.001 0.001" />
+      </geometry>
+      <material name="dummy_frame_transparent" />
+    </visual>
+  </link>
+  <joint name="tof_rear_right_mount" type="fixed">
+    <origin xyz="-0.32 -0.20 -0.05" rpy="0 1.5707963267949 0" />
+    <parent link="base_link" />
+    <child link="tof_rear_right" />
+  </joint>
+  <link name="limit_switch_front">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.05" />
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.001 0.001 0.001" />
+      </geometry>
+      <material name="dummy_frame_transparent" />
+    </visual>
+  </link>
+  <joint name="limit_switch_front_mount" type="fixed">
+    <origin xyz="0.07 0 0" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="limit_switch_front" />
+  </joint>
+  <link name="limit_switch_rear">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.05" />
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.001 0.001 0.001" />
+      </geometry>
+      <material name="dummy_frame_transparent" />
+    </visual>
+  </link>
+  <joint name="limit_switch_rear_mount" type="fixed">
+    <origin xyz="-0.335 0 0" rpy="0 0 3.14159265358979" />
+    <parent link="base_link" />
+    <child link="limit_switch_rear" />
+  </joint>
+  <link name="upper_legs">
+    <inertial>
+      <origin xyz="-0.065 0 0.12" rpy="0 0 0" />
+      <mass value="1.5" />
+      <inertia ixx="0.0196" ixy="0" ixz="0" iyy="0.0146" iyz="0" izz="0.0132" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/upper_legs.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+    <collision>
+      <origin xyz="-0.0645 0 0.12" rpy="0 0 0" />
+      <geometry>
+        <box size="0.181 0.268 0.294" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="knees" type="revolute">
+    <origin xyz="-0.0275 0 0.226" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="upper_legs" />
+    <axis xyz="0 1 0" />
+    <limit effort="50" velocity="2" lower="-1.5707963267949" upper="0.366519142918809" />
+  </joint>
+  <link name="pelvis">
+    <inertial>
+      <origin xyz="0 0 0.0385" rpy="0 0 0" />
+      <mass value="1.0" />
+      <inertia ixx="0.0071" ixy="0" ixz="0" iyy="0.0033" iyz="0" izz="0.0067" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/pelvis.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.0385" rpy="0 0 0" />
+      <geometry>
+        <box size="0.131 0.252 0.149" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="hips" type="revolute">
+    <origin xyz="-0.10564 0 0.21708" rpy="0 0 0" />
+    <parent link="upper_legs" />
+    <child link="pelvis" />
+    <axis xyz="0 1 0" />
+    <limit effort="50" velocity="2" lower="-0.366519142918809" upper="1.5707963267949" />
+    <mimic joint="knees" multiplier="-1" offset="0" />
+  </joint>
+  <joint name="waist_base_joint" type="fixed">
+    <origin xyz="0 0 0.10" rpy="0 0 0" />
+    <parent link="pelvis" />
+    <child link="waist_base_link" />
+  </joint>
+  <link name="torso">
+    <inertial>
+      <origin xyz="0.002 0 0.2125" rpy="0 0 0" />
+      <mass value="2.0" />
+      <inertia ixx="0.0281" ixy="0" ixz="0" iyy="0.0240" iyz="0" izz="0.0120" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/torso.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+    <collision>
+      <origin xyz="0.002 0 0.2125" rpy="0 0 0" />
+      <geometry>
+        <box size="0.154 0.22 0.347" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="torso_shell_joint" type="fixed">
+    <origin xyz="0 0 0.28" rpy="0 0 0" />
+    <parent link="waist_link" />
+    <child link="torso" />
+  </joint>
+  <link name="neck">
+    <inertial>
+      <origin xyz="0.007 0 0.07" rpy="0 0 0" />
+      <mass value="0.2" />
+      <inertia ixx="0.0005" ixy="0" ixz="0" iyy="0.0005" iyz="0" izz="0.0003" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/neck.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+    <collision>
+      <origin xyz="0.007 0 0.0695" rpy="0 0 0" />
+      <geometry>
+        <box size="0.1 0.07 0.161" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="neck_turn" type="revolute">
+    <origin xyz="0.00096 0 0.38092" rpy="0 0 0" />
+    <parent link="torso" />
+    <child link="neck" />
+    <axis xyz="0 0 1" />
+    <limit effort="10" velocity="2" lower="-1.3962634" upper="1.3962634" />
+  </joint>
+  <link name="head">
+    <inertial>
+      <origin xyz="0.0135 0 0.0215" rpy="0 0 0" />
+      <mass value="0.6" />
+      <inertia ixx="0.0035" ixy="0" ixz="0" iyy="0.0042" iyz="0" izz="0.0034" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/head.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+    <collision>
+      <origin xyz="0.0135 0 0.0215" rpy="0 0 0" />
+      <geometry>
+        <box size="0.195 0.156 0.207" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="head_nod" type="revolute">
+    <origin xyz="0.00698 0 0.1" rpy="0 0 0" />
+    <parent link="neck" />
+    <child link="head" />
+    <axis xyz="0 1 0" />
+    <limit effort="10" velocity="2" lower="-0.6981317" upper="0.4363323" />
+  </joint>
+  <link name="head_camera_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.05" />
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.001 0.001 0.001" />
+      </geometry>
+      <material name="dummy_frame_transparent" />
+    </visual>
+  </link>
+  <joint name="head_camera_joint" type="fixed">
+    <origin xyz="0.09 0 0.03" rpy="0 0 0" />
+    <parent link="head" />
+    <child link="head_camera_link" />
+  </joint>
+  <link name="head_camera_optical_frame">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.05" />
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.001 0.001 0.001" />
+      </geometry>
+      <material name="dummy_frame_transparent" />
+    </visual>
+  </link>
+  <joint name="head_camera_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.5707963267949 0 -1.5707963267949" />
+    <parent link="head_camera_link" />
+    <child link="head_camera_optical_frame" />
+  </joint>
+  <!-- ============ hands: old 5-finger placeholder mounted at the new
+       arm TCPs (Q2). Old inverted limits corrected; mimic mid/tip kept.
+       Palm mount rpy is an eyeball placeholder. ============ -->
+  <link name="right_palm">
+    <inertial>
+      <origin xyz="0.0075 -0.0615 0.0015" rpy="0 0 0" />
+      <mass value="0.2" />
+      <inertia ixx="0.0003" ixy="0" ixz="0" iyy="0.0002" iyz="0" izz="0.0004" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/right_palm.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+    <collision>
+      <origin xyz="0.0075 -0.0615 0.0015" rpy="0 0 0" />
+      <geometry>
+        <box size="0.101 0.121 0.055" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_palm_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.5707963267949 0 0" />
+    <parent link="right_arm_tcp" />
+    <child link="right_palm" />
+  </joint>
+  <link name="right_thumb_base">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.02" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/right_thumb_base.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="right_thumb" type="revolute">
+    <origin xyz="0.0446 -0.0525 -0.019" rpy="0 0 2.268928" />
+    <parent link="right_palm" />
+    <child link="right_thumb_base" />
+    <axis xyz="-1 0 0" />
+    <limit effort="2" velocity="5" lower="0.0" upper="1.1" />
+  </joint>
+  <link name="right_thumb_mid">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/right_finger_mid.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="_right_thumb_mid" type="revolute">
+    <origin xyz="0 -0.0185 -0.0075" rpy="0 0 0" />
+    <parent link="right_thumb_base" />
+    <child link="right_thumb_mid" />
+    <axis xyz="-1 0 0" />
+    <limit effort="2" velocity="5" lower="0.0" upper="1.1" />
+    <mimic joint="right_thumb" multiplier="1" offset="0" />
+  </joint>
+  <link name="right_thumb_tip">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/right_finger_tip.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="_right_thumb_tip" type="revolute">
+    <origin xyz="-0.004 -0.02 0.0" rpy="0 0 0" />
+    <parent link="right_thumb_mid" />
+    <child link="right_thumb_tip" />
+    <axis xyz="-1 0 0" />
+    <limit effort="2" velocity="5" lower="0.0" upper="1.1" />
+    <mimic joint="right_thumb" multiplier="1" offset="0" />
+  </joint>
+  <link name="right_index_base">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.02" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/right_finger_base_neg.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="right_index" type="revolute">
+    <origin xyz="0.0277 -0.1101 -0.004" rpy="0 0 0.1047198" />
+    <parent link="right_palm" />
+    <child link="right_index_base" />
+    <axis xyz="-1 0 0" />
+    <limit effort="2" velocity="5" lower="0.0" upper="1.1" />
+  </joint>
+  <link name="right_index_mid">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/right_finger_mid.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="_right_index_mid" type="revolute">
+    <origin xyz="0 -0.0198 -0.0028" rpy="0 0 0" />
+    <parent link="right_index_base" />
+    <child link="right_index_mid" />
+    <axis xyz="-1 0 0" />
+    <limit effort="2" velocity="5" lower="0.0" upper="1.1" />
+    <mimic joint="right_index" multiplier="1" offset="0" />
+  </joint>
+  <link name="right_index_tip">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/right_finger_tip.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="_right_index_tip" type="revolute">
+    <origin xyz="-0.004 -0.02 0" rpy="0 0 0" />
+    <parent link="right_index_mid" />
+    <child link="right_index_tip" />
+    <axis xyz="-1 0 0" />
+    <limit effort="2" velocity="5" lower="0.0" upper="1.1" />
+    <mimic joint="right_index" multiplier="1" offset="0" />
+  </joint>
+  <link name="right_middle_base">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.02" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/right_finger_base_pos.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="right_middle" type="revolute">
+    <origin xyz="0.002 -0.115 -0.004" rpy="0 0 0.0349066" />
+    <parent link="right_palm" />
+    <child link="right_middle_base" />
+    <axis xyz="-1 0 0" />
+    <limit effort="2" velocity="5" lower="0.0" upper="1.1" />
+  </joint>
+  <link name="right_middle_mid">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/right_finger_mid.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="_right_middle_mid" type="revolute">
+    <origin xyz="0 -0.0198 -0.0028" rpy="0 0 0" />
+    <parent link="right_middle_base" />
+    <child link="right_middle_mid" />
+    <axis xyz="-1 0 0" />
+    <limit effort="2" velocity="5" lower="0.0" upper="1.1" />
+    <mimic joint="right_middle" multiplier="1" offset="0" />
+  </joint>
+  <link name="right_middle_tip">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/right_finger_tip.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="_right_middle_tip" type="revolute">
+    <origin xyz="0.004 -0.02 0" rpy="0 0 0" />
+    <parent link="right_middle_mid" />
+    <child link="right_middle_tip" />
+    <axis xyz="-1 0 0" />
+    <limit effort="2" velocity="5" lower="0.0" upper="1.1" />
+    <mimic joint="right_middle" multiplier="1" offset="0" />
+  </joint>
+  <link name="right_ring_base">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.02" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/right_finger_base_neg.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="right_ring" type="revolute">
+    <origin xyz="-0.0109 -0.115 -0.004" rpy="0 0 -0.0349066" />
+    <parent link="right_palm" />
+    <child link="right_ring_base" />
+    <axis xyz="-1 0 0" />
+    <limit effort="2" velocity="5" lower="0.0" upper="1.1" />
+  </joint>
+  <link name="right_ring_mid">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/right_finger_mid.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="_right_ring_mid" type="revolute">
+    <origin xyz="0 -0.0199 -0.0028" rpy="0 0 0" />
+    <parent link="right_ring_base" />
+    <child link="right_ring_mid" />
+    <axis xyz="-1 0 0" />
+    <limit effort="2" velocity="5" lower="0.0" upper="1.1" />
+    <mimic joint="right_ring" multiplier="1" offset="0" />
+  </joint>
+  <link name="right_ring_tip">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/right_finger_tip.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="_right_ring_tip" type="revolute">
+    <origin xyz="-0.004 -0.02 0" rpy="0 0 0" />
+    <parent link="right_ring_mid" />
+    <child link="right_ring_tip" />
+    <axis xyz="-1 0 0" />
+    <limit effort="2" velocity="5" lower="0.0" upper="1.1" />
+    <mimic joint="right_ring" multiplier="1" offset="0" />
+  </joint>
+  <link name="right_pinky_base">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.02" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/right_finger_base_pos.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="right_pinky" type="revolute">
+    <origin xyz="-0.0406 -0.1101 -0.004" rpy="0 0 -0.1047198" />
+    <parent link="right_palm" />
+    <child link="right_pinky_base" />
+    <axis xyz="-1 0 0" />
+    <limit effort="2" velocity="5" lower="0.0" upper="1.1" />
+  </joint>
+  <link name="right_pinky_mid">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/right_finger_mid.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="_right_pinky_mid" type="revolute">
+    <origin xyz="0 -0.0198 -0.0028" rpy="0 0 0" />
+    <parent link="right_pinky_base" />
+    <child link="right_pinky_mid" />
+    <axis xyz="-1 0 0" />
+    <limit effort="2" velocity="5" lower="0.0" upper="1.1" />
+    <mimic joint="right_pinky" multiplier="1" offset="0" />
+  </joint>
+  <link name="right_pinky_tip">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/right_finger_tip.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="_right_pinky_tip" type="revolute">
+    <origin xyz="0.004 -0.02 0" rpy="0 0 0" />
+    <parent link="right_pinky_mid" />
+    <child link="right_pinky_tip" />
+    <axis xyz="-1 0 0" />
+    <limit effort="2" velocity="5" lower="0.0" upper="1.1" />
+    <mimic joint="right_pinky" multiplier="1" offset="0" />
+  </joint>
+  <link name="left_palm">
+    <inertial>
+      <origin xyz="0.0075 0.0615 0.0015" rpy="0 0 0" />
+      <mass value="0.2" />
+      <inertia ixx="0.0003" ixy="0" ixz="0" iyy="0.0002" iyz="0" izz="0.0004" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/left_palm.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+    <collision>
+      <origin xyz="0.0075 0.0615 0.0015" rpy="0 0 0" />
+      <geometry>
+        <box size="0.101 0.121 0.055" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_palm_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="1.5707963267949 0 0" />
+    <parent link="left_arm_tcp" />
+    <child link="left_palm" />
+  </joint>
+  <link name="left_thumb_base">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.02" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/left_thumb_base.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="left_thumb" type="revolute">
+    <origin xyz="0.0446 0.0484 -0.019" rpy="0 0 -2.268928" />
+    <parent link="left_palm" />
+    <child link="left_thumb_base" />
+    <axis xyz="1 0 0" />
+    <limit effort="2" velocity="5" lower="-1.1" upper="0.0" />
+  </joint>
+  <link name="left_thumb_mid">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/left_finger_mid.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="_left_thumb_mid" type="revolute">
+    <origin xyz="0 0.0185 -0.007" rpy="0 0 0" />
+    <parent link="left_thumb_base" />
+    <child link="left_thumb_mid" />
+    <axis xyz="1 0 0" />
+    <limit effort="2" velocity="5" lower="-1.1" upper="0.0" />
+    <mimic joint="left_thumb" multiplier="1" offset="0" />
+  </joint>
+  <link name="left_thumb_tip">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/left_finger_tip.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="_left_thumb_tip" type="revolute">
+    <origin xyz="-0.004 0.0201 0" rpy="0 0 0" />
+    <parent link="left_thumb_mid" />
+    <child link="left_thumb_tip" />
+    <axis xyz="1 0 0" />
+    <limit effort="2" velocity="5" lower="-1.1" upper="0.0" />
+    <mimic joint="left_thumb" multiplier="1" offset="0" />
+  </joint>
+  <link name="left_index_base">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.02" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/left_finger_base_neg.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="left_index" type="revolute">
+    <origin xyz="0.0277 0.1061 -0.004" rpy="0 0 -0.1047198" />
+    <parent link="left_palm" />
+    <child link="left_index_base" />
+    <axis xyz="1 0 0" />
+    <limit effort="2" velocity="5" lower="-1.1" upper="0.0" />
+  </joint>
+  <link name="left_index_mid">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/left_finger_mid.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="_left_index_mid" type="revolute">
+    <origin xyz="0 0.0198 -0.0028" rpy="0 0 0" />
+    <parent link="left_index_base" />
+    <child link="left_index_mid" />
+    <axis xyz="1 0 0" />
+    <limit effort="2" velocity="5" lower="-1.1" upper="0.0" />
+    <mimic joint="left_index" multiplier="1" offset="0" />
+  </joint>
+  <link name="left_index_tip">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/left_finger_tip.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="_left_index_tip" type="revolute">
+    <origin xyz="-0.004 0.02 0" rpy="0 0 0" />
+    <parent link="left_index_mid" />
+    <child link="left_index_tip" />
+    <axis xyz="1 0 0" />
+    <limit effort="2" velocity="5" lower="-1.1" upper="0.0" />
+    <mimic joint="left_index" multiplier="1" offset="0" />
+  </joint>
+  <link name="left_middle_base">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.02" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/left_finger_base_pos.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="left_middle" type="revolute">
+    <origin xyz="0.002 0.111 -0.004" rpy="0 0 -0.0349066" />
+    <parent link="left_palm" />
+    <child link="left_middle_base" />
+    <axis xyz="1 0 0" />
+    <limit effort="2" velocity="5" lower="-1.1" upper="0.0" />
+  </joint>
+  <link name="left_middle_mid">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/left_finger_mid.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="_left_middle_mid" type="revolute">
+    <origin xyz="0 0.0198 -0.0028" rpy="0 0 0" />
+    <parent link="left_middle_base" />
+    <child link="left_middle_mid" />
+    <axis xyz="1 0 0" />
+    <limit effort="2" velocity="5" lower="-1.1" upper="0.0" />
+    <mimic joint="left_middle" multiplier="1" offset="0" />
+  </joint>
+  <link name="left_middle_tip">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/left_finger_tip.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="_left_middle_tip" type="revolute">
+    <origin xyz="0.004 0.02 0" rpy="0 0 0" />
+    <parent link="left_middle_mid" />
+    <child link="left_middle_tip" />
+    <axis xyz="1 0 0" />
+    <limit effort="2" velocity="5" lower="-1.1" upper="0.0" />
+    <mimic joint="left_middle" multiplier="1" offset="0" />
+  </joint>
+  <link name="left_ring_base">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.02" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/left_finger_base_neg.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="left_ring" type="revolute">
+    <origin xyz="-0.0109 0.111 -0.004" rpy="0 0 0.0349066" />
+    <parent link="left_palm" />
+    <child link="left_ring_base" />
+    <axis xyz="1 0 0" />
+    <limit effort="2" velocity="5" lower="-1.1" upper="0.0" />
+  </joint>
+  <link name="left_ring_mid">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/left_finger_mid.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="_left_ring_mid" type="revolute">
+    <origin xyz="0 0.0199 -0.0028" rpy="0 0 0" />
+    <parent link="left_ring_base" />
+    <child link="left_ring_mid" />
+    <axis xyz="1 0 0" />
+    <limit effort="2" velocity="5" lower="-1.1" upper="0.0" />
+    <mimic joint="left_ring" multiplier="1" offset="0" />
+  </joint>
+  <link name="left_ring_tip">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/left_finger_tip.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="_left_ring_tip" type="revolute">
+    <origin xyz="-0.004 0.02 0" rpy="0 0 0" />
+    <parent link="left_ring_mid" />
+    <child link="left_ring_tip" />
+    <axis xyz="1 0 0" />
+    <limit effort="2" velocity="5" lower="-1.1" upper="0.0" />
+    <mimic joint="left_ring" multiplier="1" offset="0" />
+  </joint>
+  <link name="left_pinky_base">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.02" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/left_finger_base_pos.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="left_pinky" type="revolute">
+    <origin xyz="-0.0406 0.1061 -0.004" rpy="0 0 0.1047198" />
+    <parent link="left_palm" />
+    <child link="left_pinky_base" />
+    <axis xyz="1 0 0" />
+    <limit effort="2" velocity="5" lower="-1.1" upper="0.0" />
+  </joint>
+  <link name="left_pinky_mid">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/left_finger_mid.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="_left_pinky_mid" type="revolute">
+    <origin xyz="0 0.0198 -0.0028" rpy="0 0 0" />
+    <parent link="left_pinky_base" />
+    <child link="left_pinky_mid" />
+    <axis xyz="1 0 0" />
+    <limit effort="2" velocity="5" lower="-1.1" upper="0.0" />
+    <mimic joint="left_pinky" multiplier="1" offset="0" />
+  </joint>
+  <link name="left_pinky_tip">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://mc_robot_description/meshes/mc1/left_finger_tip.stl" />
+      </geometry>
+      <material name="default_gray" />
+    </visual>
+  </link>
+  <joint name="_left_pinky_tip" type="revolute">
+    <origin xyz="0.004 0.02 0" rpy="0 0 0" />
+    <parent link="left_pinky_mid" />
+    <child link="left_pinky_tip" />
+    <axis xyz="1 0 0" />
+    <limit effort="2" velocity="5" lower="-1.1" upper="0.0" />
+    <mimic joint="left_pinky" multiplier="1" offset="0" />
   </joint>
 </robot>
