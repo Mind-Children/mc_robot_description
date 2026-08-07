@@ -15,6 +15,12 @@
        torso_rotate spins about gravity).
      * Hands hang off the arm TCPs (0.075 m past link_6); the old wrist
        joint is gone — the new arm's joint_6 IS the wrist.
+     * Chassis geometry follows the REAL base, not base.stl (which is a
+       pre-iteration export): wheel radius 0.05 m and track 0.38 m are
+       mc_mobile_base's kinematic constants, so base_link (= wheel axle)
+       is 0.05 m above ground.  Ground-referenced heights are anchored by
+       the firmware's 45 mm TOF calibration (CALIB_TARGET_MM); the rear
+       caster sphere's lowest point is flush with the wheel contact plane.
      * Sensor frames: laser / imu / 4 downward cliff TOF / 2 bumper
        limit switches / chest_camera_sensor / head_camera_link.
        Camera OPTICAL frames are deliberately absent: the realsense ROS
@@ -317,19 +323,19 @@
   </link>
   <link name="base_link">
     <inertial>
-      <origin xyz="-0.13 0 0.1" rpy="0 0 0" />
+      <origin xyz="-0.13 0 0.126" rpy="0 0 0" />
       <mass value="5.0" />
       <inertia ixx="0.127" ixy="0" ixz="0" iyy="0.113" iyz="0" izz="0.155" />
     </inertial>
     <visual>
-      <origin xyz="0 0 -0.076" rpy="0 0 0" />
+      <origin xyz="0 0 -0.05" rpy="0 0 0" />
       <geometry>
         <mesh filename="package://mc_robot_description/meshes/mc1/base.stl" />
       </geometry>
       <material name="default_gray" />
     </visual>
     <collision>
-      <origin xyz="-0.1325 0 0.1155" rpy="0 0 0" />
+      <origin xyz="-0.1325 0 0.1415" rpy="0 0 0" />
       <geometry>
         <box size="0.411 0.45 0.321" />
       </geometry>
@@ -339,14 +345,16 @@
          球体是 sim 里模拟脚轮的标准做法：免转向动力学、不会卡死；低摩擦材质在
          mc_simulation 侧按 collider prim 绑定。最低点与驱动轮接触面齐平。 -->
     <visual>
-      <origin xyz="-0.28 0 -0.0605" rpy="0 0 0" />
+      <origin xyz="-0.28 0 -0.0345" rpy="0 0 0" />
       <geometry>
         <sphere radius="0.0155" />
       </geometry>
-      <material name="old_dark_gray" />
+      <material name="old_dark_gray">
+        <color rgba="0.2 0.2 0.2 1" />
+      </material>
     </visual>
     <collision>
-      <origin xyz="-0.28 0 -0.0605" rpy="0 0 0" />
+      <origin xyz="-0.28 0 -0.0345" rpy="0 0 0" />
       <geometry>
         <sphere radius="0.0155" />
       </geometry>
@@ -356,12 +364,12 @@
     <inertial>
       <origin xyz="0 0.025 0" rpy="0 0 0" />
       <mass value="0.5" />
-      <inertia ixx="0.00082" ixy="0" ixz="0" iyy="0.0014" iyz="0" izz="0.00082" />
+      <inertia ixx="0.000417" ixy="0" ixz="0" iyy="0.000625" iyz="0" izz="0.000417" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://mc_robot_description/meshes/mc1/left_wheel.stl" />
+        <mesh filename="package://mc_robot_description/meshes/mc1/left_wheel.stl" scale="0.656168 1 0.656168" />
       </geometry>
       <material name="old_dark_gray">
         <color rgba="0.2 0.2 0.2 1" />
@@ -370,7 +378,7 @@
     <collision>
       <origin xyz="0 0.025 0" rpy="1.5707963267949 0 0" />
       <geometry>
-        <cylinder radius="0.076" length="0.05" />
+        <cylinder radius="0.05" length="0.05" />
       </geometry>
     </collision>
   </link>
@@ -378,19 +386,19 @@
     <inertial>
       <origin xyz="0 -0.025 0" rpy="0 0 0" />
       <mass value="0.5" />
-      <inertia ixx="0.00082" ixy="0" ixz="0" iyy="0.0014" iyz="0" izz="0.00082" />
+      <inertia ixx="0.000417" ixy="0" ixz="0" iyy="0.000625" iyz="0" izz="0.000417" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://mc_robot_description/meshes/mc1/right_wheel.stl" />
+        <mesh filename="package://mc_robot_description/meshes/mc1/right_wheel.stl" scale="0.656168 1 0.656168" />
       </geometry>
       <material name="old_dark_gray" />
     </visual>
     <collision>
       <origin xyz="0 -0.025 0" rpy="1.5707963267949 0 0" />
       <geometry>
-        <cylinder radius="0.076" length="0.05" />
+        <cylinder radius="0.05" length="0.05" />
       </geometry>
     </collision>
   </link>
@@ -1209,61 +1217,61 @@
     <child link="left_arm_tcp" />
   </joint>
   <joint name="left_wheel" type="continuous">
-    <origin xyz="0 0.182 0" rpy="0 0 0" />
+    <origin xyz="0 0.165 0" rpy="0 0 0" />
     <parent link="base_link" />
     <child link="left_wheel" />
     <axis xyz="0 1 0" />
     <limit effort="10" velocity="34.5" />
   </joint>
   <joint name="right_wheel" type="continuous">
-    <origin xyz="0 -0.182 0" rpy="0 0 0" />
+    <origin xyz="0 -0.165 0" rpy="0 0 0" />
     <parent link="base_link" />
     <child link="right_wheel" />
     <axis xyz="0 1 0" />
     <limit effort="10" velocity="34.5" />
   </joint>
   <joint name="laser_mount" type="fixed">
-    <origin xyz="0 0 0.1" rpy="0 0 -1.5707963267949" />
+    <origin xyz="0 0 0.126" rpy="0 0 -1.5707963267949" />
     <parent link="base_link" />
     <child link="laser" />
   </joint>
   <joint name="imu_mount" type="fixed">
-    <origin xyz="0 0 0" rpy="0 0 0" />
+    <origin xyz="0 0 0.026" rpy="0 0 0" />
     <parent link="base_link" />
     <child link="imu" />
   </joint>
   <joint name="tof_front_left_mount" type="fixed">
-    <origin xyz="0.11 0.20 -0.031" rpy="0 1.5707963267949 0" />
+    <origin xyz="0.11 0.20 -0.005" rpy="0 1.5707963267949 0" />
     <parent link="base_link" />
     <child link="tof_front_left" />
   </joint>
   <joint name="tof_front_right_mount" type="fixed">
-    <origin xyz="0.11 -0.20 -0.031" rpy="0 1.5707963267949 0" />
+    <origin xyz="0.11 -0.20 -0.005" rpy="0 1.5707963267949 0" />
     <parent link="base_link" />
     <child link="tof_front_right" />
   </joint>
   <joint name="tof_rear_left_mount" type="fixed">
-    <origin xyz="-0.32 0.13 -0.031" rpy="0 1.5707963267949 0" />
+    <origin xyz="-0.32 0.13 -0.005" rpy="0 1.5707963267949 0" />
     <parent link="base_link" />
     <child link="tof_rear_left" />
   </joint>
   <joint name="tof_rear_right_mount" type="fixed">
-    <origin xyz="-0.32 -0.13 -0.031" rpy="0 1.5707963267949 0" />
+    <origin xyz="-0.32 -0.13 -0.005" rpy="0 1.5707963267949 0" />
     <parent link="base_link" />
     <child link="tof_rear_right" />
   </joint>
   <joint name="limit_switch_front_mount" type="fixed">
-    <origin xyz="0.12 0 0" rpy="0 0 0" />
+    <origin xyz="0.12 0 0.026" rpy="0 0 0" />
     <parent link="base_link" />
     <child link="limit_switch_front" />
   </joint>
   <joint name="limit_switch_rear_mount" type="fixed">
-    <origin xyz="-0.335 0 0" rpy="0 0 3.14159265358979" />
+    <origin xyz="-0.335 0 0.026" rpy="0 0 3.14159265358979" />
     <parent link="base_link" />
     <child link="limit_switch_rear" />
   </joint>
   <joint name="knees" type="revolute">
-    <origin xyz="-0.0275 0 0.226" rpy="0 0 0" />
+    <origin xyz="-0.0275 0 0.252" rpy="0 0 0" />
     <parent link="base_link" />
     <child link="upper_legs" />
     <axis xyz="0 1 0" />
