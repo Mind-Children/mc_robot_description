@@ -9,16 +9,23 @@ on in the `main` branch.
 ## Contents
 
 ```
-urdf/mc1.urdf     canonical model — FULL BODY since M9 (2026-08-06):
-                  chassis + passive wheels + legs (knees drive, hips mimic
-                  x-1 parallelogram) + waist + dual 6-DOF arms + torso
-                  shell + neck/head + old-Codey 5-finger hands at the arm
-                  TCPs + sensor frames (laser, imu, 4 down-facing cliff
-                  TOF, 2 limit switches, realsense chain, head camera
-                  120deg optical). Body segments are PLACEHOLDER geometry
-                  ported from the old Codey; they get replaced as the
-                  next-gen Onshape design lands.
-meshes/mc1/       STL meshes
+urdf/mc1.urdf     canonical model — the old Codey BODY with the new 6-DOF
+                  arms (v2, 2026-08-07). Body joint names are the old ones:
+                  knees (+ hips mimic x-1, the level-keeping parallelogram),
+                  torso_rotate (the waist), neck_turn, head_nod,
+                  chest_camera (the realsense pitch axis),
+                  <side>_{thumb,index,middle,ring,pinky} (+ mimic segments),
+                  left/right_wheel. Arms are <side>_arm_joint_1..6 with
+                  their own DH-style frames, hands hang off the TCPs.
+                  Sensor frames: laser, imu, 4 downward cliff TOF, 2 bumper
+                  limit switches, chest_camera_sensor, head_camera_link.
+                  Camera OPTICAL frames are deliberately NOT here — the
+                  realsense ROS driver publishes them on hardware, the
+                  Isaac bridge in sim.
+                  Body segments are the old-Codey geometry, i.e. placeholder
+                  until the next-gen design lands in Onshape.
+meshes/mc1/       STL meshes (base_link/waist_link/realsense are leftovers
+                  from the retired bench-unit model — unreferenced)
 launch/display.launch.py   robot_state_publisher + joint sliders + RViz
 launch/rsp.launch.py       headless RSP (/joint_states -> /current_joint_states)
 rviz/mc1.rviz
@@ -62,8 +69,43 @@ Onshape is the design authority. Change the model there, export URDF+meshes
 to `package://mc_robot_description/meshes/mc1/`, and land the result **only
 here** (commit + tag). No other repo may carry a URDF copy.
 
-## Visualize
+## Visualize / iterate on the model
+
+This package is standalone-runnable: one docker image with RViz, joint
+sliders and `check_urdf`, independent of the robot stack.
 
 ```bash
-ros2 launch mc_robot_description display.launch.py
+./build.sh          # once (tag = current branch); only needed again when
+                    # the image tooling changes, NOT after model edits
+./rviz.sh           # RViz + a slider per joint
+./rviz.sh --no-jsp  # zero pose, no sliders
+./rviz.sh --gpu     # nvidia runtime (software GL otherwise — fine, slower)
+```
+
+**Model edits need no rebuild**: `rviz.sh` bind-mounts `urdf/ meshes/ rviz/
+launch/` over the installed share dir, so the loop is *edit → rerun
+`./rviz.sh`*. Sliders start every joint at 0 (not at the middle of its
+limits, which is the joint_state_publisher default and makes an asymmetric
+model look broken); mimic joints (`hips`, the finger segments) follow their
+master automatically.
+
+Render what the running stack publishes instead of driving it yourself —
+same DDS domain as the robot/sim:
+
+```bash
+ROS_DOMAIN_ID=42 ./rviz.sh --external
+```
+
+Validate without a display:
+
+```bash
+docker run --rm -v "$PWD/urdf:/urdf:ro" \
+  mindchildren/mc_robot_description:seattle-lab check_urdf /urdf/mc1.urdf
+```
+
+Inside any container that already has the package (e.g. `mc_one`), the
+launch file works directly:
+
+```bash
+ros2 launch mc_robot_description display.launch.py joints:=gui|zero|external
 ```
