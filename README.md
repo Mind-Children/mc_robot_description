@@ -10,7 +10,9 @@ on in the `main` branch.
 
 ```
 urdf/mc1.urdf     canonical model — the old Codey BODY with the new 6-DOF
-                  arms (v2, 2026-08-07). Body joint names are the old ones:
+                  arms (v2, 2026-08-07; v2.1 the same day re-cut the chassis
+                  to the REAL base's kinematics, see below). 65 links / 64
+                  joints. Body joint names are the old ones:
                   knees (+ hips mimic x-1, the level-keeping parallelogram),
                   torso_rotate (the waist), neck_turn, head_nod,
                   chest_camera (the realsense pitch axis),
@@ -24,8 +26,8 @@ urdf/mc1.urdf     canonical model — the old Codey BODY with the new 6-DOF
                   Isaac bridge in sim.
                   Body segments are the old-Codey geometry, i.e. placeholder
                   until the next-gen design lands in Onshape.
-meshes/mc1/       STL meshes (base_link/waist_link/realsense are leftovers
-                  from the retired bench-unit model — unreferenced)
+meshes/mc1/       STL meshes (27, all referenced — the retired bench-unit
+                  leftovers were deleted with v2)
 launch/display.launch.py   robot_state_publisher + joint sliders + RViz
 launch/rsp.launch.py       headless RSP (/joint_states -> /current_joint_states)
 rviz/mc1.rviz
@@ -33,12 +35,38 @@ mc_robot_description/      Python helper — the sanctioned access path
 ```
 
 ⚠ **Arm-mount constraint**: the `<side>_arm_joint_1` mount rpy on `torso`
-(`0 -1.309 ±1.5707963`) is the orientation the arm firmware's GravityFF
-closed form was generated for. Between the ground and the torso every
-joint is either yaw-about-gravity (`waist_joint`) or cancelled by the
-hips parallelogram, so the constraint holds in every pose — do NOT
-change these rpy values (or insert non-zero-rpy joints above the arms)
-without regenerating the firmware gravity model.
+(`0 -1.309 ±1.5707963`, a 15-degree-up install) is the orientation the arm
+firmware's GravityFF closed form was generated for. Between the ground and
+the torso every joint is either yaw-about-gravity (`torso_rotate`) or
+cancelled by the `knees`/`hips` parallelogram, so the constraint holds in
+every pose — do NOT change these rpy values (or insert non-zero-rpy joints
+above the arms) without regenerating the firmware gravity model.
+
+## Chassis geometry (v2.1) — the numbers that must not drift
+
+`base.stl` is a PRE-ITERATION export whose wheel wells no longer match the
+hardware; the kinematically meaningful values come from the real base instead
+(they are also `mc_mobile_base`'s `DiffDriveNode` parameters):
+
+| | value |
+|---|---|
+| wheel radius | **0.05 m** |
+| wheel track (contact-plane separation) | **0.38 m** |
+| ground plane in the `base_link` frame | **z = −0.05** (`base_link` sits at the wheel axle) |
+
+Everything ground-referenced is anchored to those: the four cliff TOFs sit
+**45 mm** above ground (the firmware's `CALIB_TARGET_MM`), the laser at
+176 mm, the bumper limit switches at 76 mm, the chassis underside at 31 mm,
+and the rear caster sphere's lowest point is flush with the wheel contact
+plane. The caster is a second `<visual>`/`<collision>` **on `base_link`
+itself**, not a link of its own — the model is imported with
+`merge_fixed_joints=False` (the sensor frames must survive), under which a
+separate link would become an extra rigid body plus a fixed-joint constraint.
+
+⚠ Any consumer that converts between body velocity and wheel speed
+(`mc_simulation`'s `sensor_sim.py`, the real `DiffDriveNode`) must use the
+SAME radius and track, or commanded speed, actual motion and odometry
+disagree and SLAM builds a scaled map.
 
 ## Consuming the model
 
