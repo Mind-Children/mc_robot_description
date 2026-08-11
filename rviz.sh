@@ -70,10 +70,27 @@ echo ">>> ${IMAGE}  joints:=${JOINTS}  (model mounted live from $(pwd))"
 TTY_ARGS=()
 [ -t 0 ] && TTY_ARGS=(-it)
 
+# CYCLONEDDS_URI must be CLEARED, not inherited. The mc_one base image sets
+# it to /context/cyclonedds.xml — correct for the compose stacks, which bind
+# a context dir — but this script is a standalone viewer and mounts no
+# /context. Cyclone treats a missing config file as fatal: it fails to create
+# the domain, and rviz2 / robot_state_publisher / joint_state_publisher_gui
+# all abort at startup with
+#   can't open configuration file /context/cyclonedds.xml
+#   rmw_create_node: failed to create domain
+# An empty value means "use Cyclone's defaults", which on a single host is
+# exactly what a local viewer wants.
+#
+# ROS_DOMAIN_ID stays on its default (0) on purpose. This is a STANDALONE
+# model viewer: joints:=gui means joint_state_publisher_gui's sliders drive
+# the model. Putting it on the robot's domain (42) would let a running stack
+# publish joint states into the same graph and fight the sliders. Override
+# the variable if you deliberately want to watch the live robot.
 exec docker run --rm "${TTY_ARGS[@]}" \
     --network host \
     -e DISPLAY="$DISPLAY" \
     -e QT_X11_NO_MITSHM=1 \
+    -e CYCLONEDDS_URI="" \
     -e ROS_DOMAIN_ID="${ROS_DOMAIN_ID:-0}" \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
     "${XAUTH_ARGS[@]}" \

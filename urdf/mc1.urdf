@@ -340,23 +340,110 @@
         <box size="0.411 0.45 0.321" />
       </geometry>
     </collision>
-    <!-- 后万向轮：车体自带的第二个几何体，不是独立 link —— 导入 Isaac 后与底盘是
+    <!-- 后万向轮：车体自带的几何体，不是独立 link —— 导入 Isaac 后与底盘是
          同一个刚体（本模型 merge_fixed_joints=False，独立 link 会变成额外刚体+固定关节）。
          球体是 sim 里模拟脚轮的标准做法：免转向动力学、不会卡死；低摩擦材质在
-         mc_simulation 侧按 collider prim 绑定。最低点与驱动轮接触面齐平。 -->
+         mc_simulation 侧按 collider prim 绑定。最低点与驱动轮接触面齐平。
+
+         由单球（点接触）改为 6 个小球摆在正六边形顶点上（外接圆 R=0.031 m，
+         小球 r=0.006 m，接触面直径 0.062 m）：点接触只能约束位置，车尾可以绕它
+         自由摇摆；六点构成一个支撑面，尾部姿态被真正撑住。每个球心 z=-0.044
+         = -0.05 + r，所以最低点仍与驱动轮接触面严格齐平——这条不能破，
+         整车的离地高度是由它和轮半径共同锚定的。
+
+         ⚠ 顺序敏感：mc_simulation 的 dual_arm_waist.py 按 <collision> 在本
+         link 中的 0-based 序号寻址 collider（base_link/collisions/mesh_<i>），
+         chassis 是 [0]、这 6 个脚轮球是 [1..6]。增删或重排本 link 的
+         <collision> 必须同步改那边的 CASTER_COLLIDERS，否则脚轮拿不到
+         0.05 的低摩擦材质、转向会变涩（那边有类型断言，会直接报错而不是静默）。 -->
     <visual>
-      <origin xyz="-0.28 0 -0.0345" rpy="0 0 0" />
+      <origin xyz="-0.249 0.0 -0.044" rpy="0 0 0" />
       <geometry>
-        <sphere radius="0.0155" />
+        <sphere radius="0.006" />
+      </geometry>
+      <material name="old_dark_gray">
+        <color rgba="0.2 0.2 0.2 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.2645 0.026847 -0.044" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.006" />
+      </geometry>
+      <material name="old_dark_gray">
+        <color rgba="0.2 0.2 0.2 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.2955 0.026847 -0.044" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.006" />
+      </geometry>
+      <material name="old_dark_gray">
+        <color rgba="0.2 0.2 0.2 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.311 0.0 -0.044" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.006" />
+      </geometry>
+      <material name="old_dark_gray">
+        <color rgba="0.2 0.2 0.2 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.2955 -0.026847 -0.044" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.006" />
+      </geometry>
+      <material name="old_dark_gray">
+        <color rgba="0.2 0.2 0.2 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.2645 -0.026847 -0.044" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.006" />
       </geometry>
       <material name="old_dark_gray">
         <color rgba="0.2 0.2 0.2 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.28 0 -0.0345" rpy="0 0 0" />
+      <origin xyz="-0.249 0.0 -0.044" rpy="0 0 0" />
       <geometry>
-        <sphere radius="0.0155" />
+        <sphere radius="0.006" />
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="-0.2645 0.026847 -0.044" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.006" />
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="-0.2955 0.026847 -0.044" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.006" />
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="-0.311 0.0 -0.044" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.006" />
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="-0.2955 -0.026847 -0.044" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.006" />
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="-0.2645 -0.026847 -0.044" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.006" />
       </geometry>
     </collision>
   </link>

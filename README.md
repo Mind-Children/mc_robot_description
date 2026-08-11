@@ -57,9 +57,14 @@ hardware; the kinematically meaningful values come from the real base instead
 Everything ground-referenced is anchored to those: the four cliff TOFs sit
 **45 mm** above ground (the firmware's `CALIB_TARGET_MM`), the laser at
 176 mm, the bumper limit switches at 76 mm, the chassis underside at 31 mm,
-and the rear caster sphere's lowest point is flush with the wheel contact
-plane. The caster is a second `<visual>`/`<collision>` **on `base_link`
-itself**, not a link of its own — the model is imported with
+and every rear-caster sphere's lowest point is flush with the wheel contact
+plane. The caster is **six small spheres on the vertices of a regular
+hexagon** (circumradius 15.5 mm, sphere radius 6 mm, so a 31 mm support
+patch) rather than the single ball it used to be: one sphere is a point
+contact, which constrains position but lets the tail rock freely about it,
+while six give the rear a real support face. They are extra
+`<visual>`/`<collision>` elements **on `base_link` itself**, not a link of
+their own — the model is imported with
 `merge_fixed_joints=False` (the sensor frames must survive), under which a
 separate link would become an extra rigid body plus a fixed-joint constraint.
 
