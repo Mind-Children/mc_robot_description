@@ -2,7 +2,7 @@
 """Headless robot_state_publisher for the MC1 full-body model.
 
 Runs robot_state_publisher only (no RViz, no JSP-GUI), remapping
-/joint_states -> /current_joint_states — the topic the rest of the stack
+/joint_states -> /mc_hardware_interface/current_joint_states — the topic the rest of the stack
 publishes measured joints on. The desktop sim stack (and later the real
 base machine) launches this so the static URDF transforms
 (base_link -> laser / imu / tof_* / realsense chain / head_camera) exist
@@ -10,7 +10,7 @@ for navigation and perception consumers.
 
 Joint seeding: unlike the old-Codey rsp.launch.py there is no
 init-once script here — in simulation the sim bridge publishes a merged
-/current_joint_states continuously from the first Isaac step, and on the
+/mc_hardware_interface/current_joint_states continuously from the first Isaac step, and on the
 real robot the hardware-interface bridges do the same.
 """
 import os
@@ -35,7 +35,7 @@ def generate_launch_description():
             executable='robot_state_publisher',
             name='robot_state_publisher',
             parameters=[{'robot_description': robot_description}],
-            remappings=[('/joint_states', '/current_joint_states')],
+            remappings=[('/joint_states', '/mc_hardware_interface/current_joint_states')],
             output='screen',
         ),
     ])

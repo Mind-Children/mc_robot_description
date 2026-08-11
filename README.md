@@ -29,7 +29,7 @@ urdf/mc1.urdf     canonical model — the old Codey BODY with the new 6-DOF
 meshes/mc1/       STL meshes (27, all referenced — the retired bench-unit
                   leftovers were deleted with v2)
 launch/display.launch.py   robot_state_publisher + joint sliders + RViz
-launch/rsp.launch.py       headless RSP (/joint_states -> /current_joint_states)
+launch/rsp.launch.py       headless RSP (/joint_states -> /mc_hardware_interface/current_joint_states)
 rviz/mc1.rviz
 mc_robot_description/      Python helper — the sanctioned access path
 ```

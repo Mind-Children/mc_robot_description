@@ -6,7 +6,7 @@ set -euo pipefail
 #   ./rviz.sh                sliders for every joint (joint_state_publisher_gui)
 #   ./rviz.sh --no-jsp       zero pose, no sliders
 #   ./rviz.sh --external     publish nothing — render what the sim / the real
-#                            robot puts on /current_joint_states
+#                            robot puts on /mc_hardware_interface/current_joint_states
 #   ./rviz.sh --gpu          use the nvidia runtime (smoother; software GL
 #                            otherwise, which is fine for a static model)
 #   ./rviz.sh -- <args>      extra ros2 launch args, e.g.

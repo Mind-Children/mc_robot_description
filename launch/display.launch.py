@@ -18,13 +18,13 @@ Launch args:
       zero      plain joint_state_publisher pinned to 0 — the model just
                 stands there in its zero pose; use when inspecting geometry
                 or when something else will publish later.
-      external  publish nothing — someone else owns /current_joint_states
+      external  publish nothing — someone else owns /mc_hardware_interface/current_joint_states
                 (the Isaac sim bridge, or the real drivers on the robot).
   rviz_config   path to the .rviz file, default = packaged rviz/mc1.rviz.
   use_rsp       bool, default true. false when an external
                 robot_state_publisher already serves the model.
 
-Joint-state topic is /current_joint_states everywhere in this stack (the
+Joint-state topic is /mc_hardware_interface/current_joint_states everywhere in this stack (the
 raw /joint_states name is remapped), so RViz here renders exactly what the
 sim or the real robot publishes.
 """
@@ -38,7 +38,7 @@ from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node
 
-JOINT_TOPIC = '/current_joint_states'
+JOINT_TOPIC = '/mc_hardware_interface/current_joint_states'
 
 
 def _zero_params(urdf_path: str) -> dict:
