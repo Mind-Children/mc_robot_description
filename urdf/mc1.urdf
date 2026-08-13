@@ -345,105 +345,209 @@
          球体是 sim 里模拟脚轮的标准做法：免转向动力学、不会卡死；低摩擦材质在
          mc_simulation 侧按 collider prim 绑定。最低点与驱动轮接触面齐平。
 
-         由单球（点接触）改为 6 个小球摆在正六边形顶点上（外接圆 R=0.031 m，
-         小球 r=0.006 m，接触面直径 0.062 m）：点接触只能约束位置，车尾可以绕它
-         自由摇摆；六点构成一个支撑面，尾部姿态被真正撑住。每个球心 z=-0.044
-         = -0.05 + r，所以最低点仍与驱动轮接触面严格齐平——这条不能破，
-         整车的离地高度是由它和轮半径共同锚定的。
+         演变：单球（点接触，车尾可绕它自由摇摆）→ 中间一处正六边形 6 球
+         → 现在的**左右两组、每组 6 球**（2026-08-12，为抑制翻倒）。
+
+         关键在于横滚力臂：原来那一组坐在中线上，六个球的 |y| 最大只有
+         26.8mm，对横滚几乎没有贡献——真正撑住车的是 ±190mm 的驱动轮，
+         尾部等于一个点。现在两组分开到 y=±140mm，尾部支撑宽度 280mm，
+         接近 380mm 的轮距。重心所在 x≈-0.13 处，支撑多边形半宽从 114mm
+         提高到 167mm（+46%）。组外缘 |Yc|+R+r = 181mm，仍在底盘半宽
+         225mm 之内、留 44mm。
+
+         每组仍是正六边形（外接圆 R=0.031，顶点落在 ±X 轴上），相邻球心距
+         31mm > 球直径 20mm，互不重叠。球半径 6mm→10mm。
+         ⚠ 球心 z = -0.05 + r 是硬约束（此处 z=-0.040），最低点必须与驱动轮
+         接触面严格齐平——整车离地高度由它和轮半径共同锚定，改 r 必须同步改 z。
+
+         横滚支撑多边形（接地点，base_link 系）：
+           驱动轮  (0, ±0.190)          ← joint ±0.165 + 轮内偏置 0.025
+           脚轮组  (-0.28, ±0.140) 各 6 球
 
          ⚠ 顺序敏感：mc_simulation 的 dual_arm_waist.py 按 <collision> 在本
          link 中的 0-based 序号寻址 collider（base_link/collisions/mesh_<i>），
-         chassis 是 [0]、这 6 个脚轮球是 [1..6]。增删或重排本 link 的
+         chassis 是 [0]、这 12 个脚轮球是 [1..12]（先左组 6 个、再右组
+         6 个）。增删或重排本 link 的
          <collision> 必须同步改那边的 CASTER_COLLIDERS，否则脚轮拿不到
          0.05 的低摩擦材质、转向会变涩（那边有类型断言，会直接报错而不是静默）。 -->
     <visual>
-      <origin xyz="-0.249 0.0 -0.044" rpy="0 0 0" />
+      <origin xyz="-0.249 0.14 -0.04" rpy="0 0 0" />
       <geometry>
-        <sphere radius="0.006" />
+        <sphere radius="0.01" />
       </geometry>
       <material name="old_dark_gray">
         <color rgba="0.2 0.2 0.2 1" />
       </material>
     </visual>
     <visual>
-      <origin xyz="-0.2645 0.026847 -0.044" rpy="0 0 0" />
+      <origin xyz="-0.2645 0.166847 -0.04" rpy="0 0 0" />
       <geometry>
-        <sphere radius="0.006" />
+        <sphere radius="0.01" />
       </geometry>
       <material name="old_dark_gray">
         <color rgba="0.2 0.2 0.2 1" />
       </material>
     </visual>
     <visual>
-      <origin xyz="-0.2955 0.026847 -0.044" rpy="0 0 0" />
+      <origin xyz="-0.2955 0.166847 -0.04" rpy="0 0 0" />
       <geometry>
-        <sphere radius="0.006" />
+        <sphere radius="0.01" />
       </geometry>
       <material name="old_dark_gray">
         <color rgba="0.2 0.2 0.2 1" />
       </material>
     </visual>
     <visual>
-      <origin xyz="-0.311 0.0 -0.044" rpy="0 0 0" />
+      <origin xyz="-0.311 0.14 -0.04" rpy="0 0 0" />
       <geometry>
-        <sphere radius="0.006" />
+        <sphere radius="0.01" />
       </geometry>
       <material name="old_dark_gray">
         <color rgba="0.2 0.2 0.2 1" />
       </material>
     </visual>
     <visual>
-      <origin xyz="-0.2955 -0.026847 -0.044" rpy="0 0 0" />
+      <origin xyz="-0.2955 0.113153 -0.04" rpy="0 0 0" />
       <geometry>
-        <sphere radius="0.006" />
+        <sphere radius="0.01" />
       </geometry>
       <material name="old_dark_gray">
         <color rgba="0.2 0.2 0.2 1" />
       </material>
     </visual>
     <visual>
-      <origin xyz="-0.2645 -0.026847 -0.044" rpy="0 0 0" />
+      <origin xyz="-0.2645 0.113153 -0.04" rpy="0 0 0" />
       <geometry>
-        <sphere radius="0.006" />
+        <sphere radius="0.01" />
+      </geometry>
+      <material name="old_dark_gray">
+        <color rgba="0.2 0.2 0.2 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.249 -0.14 -0.04" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.01" />
+      </geometry>
+      <material name="old_dark_gray">
+        <color rgba="0.2 0.2 0.2 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.2645 -0.113153 -0.04" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.01" />
+      </geometry>
+      <material name="old_dark_gray">
+        <color rgba="0.2 0.2 0.2 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.2955 -0.113153 -0.04" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.01" />
+      </geometry>
+      <material name="old_dark_gray">
+        <color rgba="0.2 0.2 0.2 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.311 -0.14 -0.04" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.01" />
+      </geometry>
+      <material name="old_dark_gray">
+        <color rgba="0.2 0.2 0.2 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.2955 -0.166847 -0.04" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.01" />
+      </geometry>
+      <material name="old_dark_gray">
+        <color rgba="0.2 0.2 0.2 1" />
+      </material>
+    </visual>
+    <visual>
+      <origin xyz="-0.2645 -0.166847 -0.04" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.01" />
       </geometry>
       <material name="old_dark_gray">
         <color rgba="0.2 0.2 0.2 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.249 0.0 -0.044" rpy="0 0 0" />
+      <origin xyz="-0.249 0.14 -0.04" rpy="0 0 0" />
       <geometry>
-        <sphere radius="0.006" />
+        <sphere radius="0.01" />
       </geometry>
     </collision>
     <collision>
-      <origin xyz="-0.2645 0.026847 -0.044" rpy="0 0 0" />
+      <origin xyz="-0.2645 0.166847 -0.04" rpy="0 0 0" />
       <geometry>
-        <sphere radius="0.006" />
+        <sphere radius="0.01" />
       </geometry>
     </collision>
     <collision>
-      <origin xyz="-0.2955 0.026847 -0.044" rpy="0 0 0" />
+      <origin xyz="-0.2955 0.166847 -0.04" rpy="0 0 0" />
       <geometry>
-        <sphere radius="0.006" />
+        <sphere radius="0.01" />
       </geometry>
     </collision>
     <collision>
-      <origin xyz="-0.311 0.0 -0.044" rpy="0 0 0" />
+      <origin xyz="-0.311 0.14 -0.04" rpy="0 0 0" />
       <geometry>
-        <sphere radius="0.006" />
+        <sphere radius="0.01" />
       </geometry>
     </collision>
     <collision>
-      <origin xyz="-0.2955 -0.026847 -0.044" rpy="0 0 0" />
+      <origin xyz="-0.2955 0.113153 -0.04" rpy="0 0 0" />
       <geometry>
-        <sphere radius="0.006" />
+        <sphere radius="0.01" />
       </geometry>
     </collision>
     <collision>
-      <origin xyz="-0.2645 -0.026847 -0.044" rpy="0 0 0" />
+      <origin xyz="-0.2645 0.113153 -0.04" rpy="0 0 0" />
       <geometry>
-        <sphere radius="0.006" />
+        <sphere radius="0.01" />
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="-0.249 -0.14 -0.04" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.01" />
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="-0.2645 -0.113153 -0.04" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.01" />
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="-0.2955 -0.113153 -0.04" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.01" />
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="-0.311 -0.14 -0.04" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.01" />
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="-0.2955 -0.166847 -0.04" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.01" />
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="-0.2645 -0.166847 -0.04" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.01" />
       </geometry>
     </collision>
   </link>
@@ -1244,8 +1348,14 @@
     <axis xyz="0 0 1" />
     <limit effort="7" velocity="18.85" lower="-1.83259571459405" upper="1.30899693899575" />
   </joint>
+  <!-- Arm root pulled 60 mm INBOARD along the robot's own Y (2026-08-12):
+       -0.09165 -> -0.03165, so the two roots sit 63.3 mm apart instead of
+       183.3 mm. PURE TRANSLATION — rpy is untouched at (0, -1.309, +pi/2),
+       i.e. the 15 deg mount tilt is preserved. That matters: the arm
+       firmware's GravityFF model is generated from the mount ORIENTATION, so
+       moving the mount is safe while rotating it is not (see CLAUDE.md). -->
   <joint name="right_arm_joint_1" type="revolute">
-    <origin xyz="0.00084 -0.09165 0.33902" rpy="0 -1.309 1.5707963267949" />
+    <origin xyz="0.00084 -0.03165 0.33902" rpy="0 -1.309 1.5707963267949" />
     <parent link="torso" />
     <child link="right_arm_link_1" />
     <axis xyz="0 0 1" />
@@ -1286,8 +1396,10 @@
     <axis xyz="0 0 1" />
     <limit effort="7" velocity="18.85" lower="-1.83259571459405" upper="1.30899693899575" />
   </joint>
+  <!-- Mirror of right_arm_joint_1: +0.09165 -> +0.03165, same 60 mm inboard,
+       rpy untouched at (0, -1.309, -pi/2). -->
   <joint name="left_arm_joint_1" type="revolute">
-    <origin xyz="0.00084 0.09165 0.33902" rpy="0 -1.309 -1.5707963267949" />
+    <origin xyz="0.00084 0.03165 0.33902" rpy="0 -1.309 -1.5707963267949" />
     <parent link="torso" />
     <child link="left_arm_link_1" />
     <axis xyz="0 0 1" />
@@ -1391,8 +1503,16 @@
     <parent link="head" />
     <child link="head_camera_link" />
   </joint>
+  <!-- Hand root pulled 30 mm PROXIMALLY along the arm axis (2026-08-12).
+       The offset is -Z in the tcp frame, not -Y: right_arm_tcp_joint places
+       the tcp at link_6 +Y with rpy (-pi/2, 0, 0), and that rotation maps
+       link_6 +Y onto tcp +Z — so the arm's distal direction at this point is
+       tcp +Z and "inward" is tcp -Z. The tcp's own standoff from link_6 is
+       0.075, so the palm still sits 45 mm ahead of the link_6 origin plane.
+       Only the palm MOUNT moves; *_arm_tcp itself is unchanged, because that
+       frame is the arm's tool centre point and other code reasons about it. -->
   <joint name="right_palm_joint" type="fixed">
-    <origin xyz="0 0 0" rpy="-1.570796327 0 1.570796327" />
+    <origin xyz="0 0 -0.03" rpy="-1.570796327 0 1.570796327" />
     <parent link="right_arm_tcp" />
     <child link="right_palm" />
   </joint>
@@ -1511,8 +1631,12 @@
     <limit effort="2" velocity="5" lower="0.0" upper="1.1" />
     <mimic joint="right_pinky" multiplier="1" offset="0" />
   </joint>
+  <!-- Mirror of right_palm_joint: same -0.03 along tcp -Z. Both tcp joints
+       carry the SAME rpy (-pi/2, 0, 0) from their link_6, so the inward
+       direction is tcp -Z on both sides even though the palm rpy is
+       mirrored. -->
   <joint name="left_palm_joint" type="fixed">
-    <origin xyz="0 0 0" rpy="1.570796327 0 -1.570796327" />
+    <origin xyz="0 0 -0.03" rpy="1.570796327 0 -1.570796327" />
     <parent link="left_arm_tcp" />
     <child link="left_palm" />
   </joint>
