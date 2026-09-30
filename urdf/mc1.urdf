@@ -1641,14 +1641,14 @@
     <child link="left_palm" />
   </joint>
   <joint name="left_thumb" type="revolute">
-    <origin xyz="0.0446 0.0484 -0.019" rpy="0 0 -2.268928" />
+    <origin xyz="0.0446 0.0525 -0.019" rpy="0 0 -2.268928" />
     <parent link="left_palm" />
     <child link="left_thumb_base" />
     <axis xyz="1 0 0" />
     <limit effort="2" velocity="5" lower="-1.1" upper="0.0" />
   </joint>
   <joint name="_left_thumb_mid" type="revolute">
-    <origin xyz="0 0.0185 -0.007" rpy="0 0 0" />
+    <origin xyz="0 0.0185 -0.0075" rpy="0 0 0" />
     <parent link="left_thumb_base" />
     <child link="left_thumb_mid" />
     <axis xyz="1 0 0" />
@@ -1656,7 +1656,7 @@
     <mimic joint="left_thumb" multiplier="1" offset="0" />
   </joint>
   <joint name="_left_thumb_tip" type="revolute">
-    <origin xyz="-0.004 0.0201 0" rpy="0 0 0" />
+    <origin xyz="-0.004 0.02 0" rpy="0 0 0" />
     <parent link="left_thumb_mid" />
     <child link="left_thumb_tip" />
     <axis xyz="1 0 0" />
@@ -1664,7 +1664,7 @@
     <mimic joint="left_thumb" multiplier="1" offset="0" />
   </joint>
   <joint name="left_index" type="revolute">
-    <origin xyz="0.0277 0.1061 -0.004" rpy="0 0 -0.1047198" />
+    <origin xyz="0.0277 0.1101 -0.004" rpy="0 0 -0.1047198" />
     <parent link="left_palm" />
     <child link="left_index_base" />
     <axis xyz="1 0 0" />
@@ -1687,7 +1687,7 @@
     <mimic joint="left_index" multiplier="1" offset="0" />
   </joint>
   <joint name="left_middle" type="revolute">
-    <origin xyz="0.002 0.111 -0.004" rpy="0 0 -0.0349066" />
+    <origin xyz="0.002 0.115 -0.004" rpy="0 0 -0.0349066" />
     <parent link="left_palm" />
     <child link="left_middle_base" />
     <axis xyz="1 0 0" />
@@ -1710,7 +1710,7 @@
     <mimic joint="left_middle" multiplier="1" offset="0" />
   </joint>
   <joint name="left_ring" type="revolute">
-    <origin xyz="-0.0109 0.111 -0.004" rpy="0 0 0.0349066" />
+    <origin xyz="-0.0109 0.115 -0.004" rpy="0 0 0.0349066" />
     <parent link="left_palm" />
     <child link="left_ring_base" />
     <axis xyz="1 0 0" />
@@ -1733,7 +1733,7 @@
     <mimic joint="left_ring" multiplier="1" offset="0" />
   </joint>
   <joint name="left_pinky" type="revolute">
-    <origin xyz="-0.0406 0.1061 -0.004" rpy="0 0 0.1047198" />
+    <origin xyz="-0.0406 0.1101 -0.004" rpy="0 0 0.1047198" />
     <parent link="left_palm" />
     <child link="left_pinky_base" />
     <axis xyz="1 0 0" />
